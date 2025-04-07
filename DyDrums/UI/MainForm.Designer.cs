@@ -83,8 +83,8 @@
             HiHatProgressBarLabel = new Label();
             MidiMonitorLabel = new Label();
             MidiMonitorClearButton = new Button();
-            MidiMonitorTextBox = new RichTextBox();
             groupBox4 = new GroupBox();
+            MidiMonitorListBox = new ListBox();
             ((System.ComponentModel.ISupportInitialize)ScanTimeTrackBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MidiNoteNumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ThresholdTrackbar).BeginInit();
@@ -265,7 +265,6 @@
             PadConfigDownloadButton.Text = "Download";
             PadConfigDownloadButton.UseVisualStyleBackColor = true;
             PadConfigDownloadButton.Click += PadConfigDownloadButton_Click;
-            this.PadConfigDownloadButton.Click += new System.EventHandler(this.PadConfigDownloadButton_Click);
             // 
             // groupBox1
             // 
@@ -595,7 +594,6 @@
             // HHCProgressBar
             // 
             HHCProgressBar.BackColor = Color.White;
-            HHCProgressBar.Enabled = false;
             HHCProgressBar.ForeColor = SystemColors.HotTrack;
             HHCProgressBar.Location = new Point(432, 44);
             HHCProgressBar.Maximum = 127;
@@ -633,19 +631,9 @@
             MidiMonitorClearButton.UseVisualStyleBackColor = true;
             MidiMonitorClearButton.Click += MidiMonitorClearButton_Click;
             // 
-            // MidiMonitorTextBox
-            // 
-            MidiMonitorTextBox.Enabled = false;
-            MidiMonitorTextBox.Location = new Point(21, 44);
-            MidiMonitorTextBox.Name = "MidiMonitorTextBox";
-            MidiMonitorTextBox.ScrollBars = RichTextBoxScrollBars.Vertical;
-            MidiMonitorTextBox.Size = new Size(394, 119);
-            MidiMonitorTextBox.TabIndex = 7;
-            MidiMonitorTextBox.Text = "";
-            // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(MidiMonitorTextBox);
+            groupBox4.Controls.Add(MidiMonitorListBox);
             groupBox4.Controls.Add(MidiMonitorClearButton);
             groupBox4.Controls.Add(MidiMonitorLabel);
             groupBox4.Controls.Add(HiHatProgressBarLabel);
@@ -656,6 +644,15 @@
             groupBox4.TabIndex = 60;
             groupBox4.TabStop = false;
             groupBox4.Text = "Monitor";
+            // 
+            // MidiMonitorListBox
+            // 
+            MidiMonitorListBox.FormattingEnabled = true;
+            MidiMonitorListBox.ItemHeight = 15;
+            MidiMonitorListBox.Location = new Point(18, 39);
+            MidiMonitorListBox.Name = "MidiMonitorListBox";
+            MidiMonitorListBox.Size = new Size(405, 124);
+            MidiMonitorListBox.TabIndex = 34;
             // 
             // MainForm
             // 
@@ -739,8 +736,8 @@
         private Label HiHatProgressBarLabel;
         private Label MidiMonitorLabel;
         private Button MidiMonitorClearButton;
-        private RichTextBox MidiMonitorTextBox;
         private GroupBox groupBox4;
         private Button COMPortsScanButton;
+        private ListBox MidiMonitorListBox;
     }
 }

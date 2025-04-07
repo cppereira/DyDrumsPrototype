@@ -12,12 +12,17 @@ namespace DyDrums.UI
 {
     public partial class MainForm : Form
     {
+
+        // Contante para o HHC, depois implementar para pegar ele do arquivo ou da EEPROM...
+        private const int HHCNote = 4; 
+
         private readonly SerialManager serialManager = new();
         private readonly MidiManager midiManager = new();
         private readonly PadManager padManager = new PadManager();
         private readonly EEPROMService eepromService = new();
         private readonly ConfigManager configManager = new();
         private static List<byte[]> receivedMessages = new();
+
 
 
         public static MainForm Instance { get; private set; }
@@ -32,21 +37,18 @@ namespace DyDrums.UI
 
         private void MainForm_Load(object? sender, EventArgs? e)
         {
-            
+            midiManager.MidiMessageReceived += OnMidiMessageReceived;
+            serialManager.MidiMessageReceived += OnMidiMessageReceived;
             //Chama o método que atualiza a lista de portas COM disponíveis
             AtualizarListaDePortas();
             //Chama o método que atualiza a lista de dispositivos MIDI disponíveis
             ListarDispositivosMidi();
             //Conecta o evento do checkbox
             ConnectCheckBox.CheckedChanged += ConnectCheckBox_CheckedChanged;
-            //Instanciando o Serial Manager
-            //Instanciando o Serial Manager
-            serialManager.DataReceived += SerialManager_DataReceived;
-            //Carrega as configs de Pads do arquivo pads.json            
-            //GenerateSamplePadsFile();
             var pads = configManager.LoadFromFile();
             //MessageBox.Show($"[DEBUG] {pads.Count} pads carregados do JSON.");
-            padManager.LoadConfigs(pads);            
+            padManager.LoadConfigs(pads);
+            
         }
 
         //################### GROUP BOX DE CONEXÃO ####################################
@@ -123,7 +125,7 @@ namespace DyDrums.UI
                     COMPortsScanButton.Enabled = false;
                     MidiDevicesComboBox.Enabled = false;
                     MidiDevicesScanButton.Enabled = false;
-                    MidiMonitorTextBox.Enabled = true;
+                    MidiMonitorListBox.Enabled = true;
                     MidiMonitorClearButton.Enabled = true;
                     PadConfigDownloadButton.Enabled = true;
                     PadConfigUploadButton.Enabled = true;
@@ -147,7 +149,7 @@ namespace DyDrums.UI
                     COMPortsScanButton.Enabled = true;
                     MidiDevicesComboBox.Enabled = true;
                     MidiDevicesScanButton.Enabled = true;
-                    MidiMonitorTextBox.Enabled = false;
+                    MidiMonitorListBox.Enabled = false;
                     MidiMonitorClearButton.Enabled = false;
                     PadConfigDownloadButton.Enabled = false;
                     PadConfigUploadButton.Enabled = false;
@@ -170,52 +172,10 @@ namespace DyDrums.UI
         }
         //######################## FIM GROUP BOX DE CONEXÃO ###############################
 
-        //############################# SERIAL MAMAGER ####################################
-        private void SerialManager_DataReceived(object? sender, byte[] buffer)
-        {
-            if (buffer.Length >= 3)
-            {
-                byte statusByte = buffer[0];
-                byte noteByte = buffer[1];
-                byte velocityByte = buffer[2];
-
-                int channel = (statusByte & 0x0F) + 1;
-                int note = noteByte;
-                int velocity = velocityByte;
-                if (velocity >= 127) velocity = 127;
-                string midiMessage = $"Canal: {channel}, Nota: {note}, Velocity: {velocity}";
-
-                // Atualiza o monitor
-                Invoke(() =>
-                {
-                    string timestamp = DateTime.Now.ToString("ss,fff");
-                    MidiMonitorTextBox.AppendText("[" + timestamp + "] => " + midiMessage + Environment.NewLine);
-                });
-
-                // Envia para o MIDI
-                midiManager.SendNoteOn(note, velocity, channel - 1);
-                Task.Run(async () =>
-                {
-                    await Task.Delay(80);
-                    midiManager.SendNoteOff(note, 0, channel - 1);
-                });
-
-                // Se for Hi-Hat Controller (nota 4), atualiza barra
-                if (note == 4)
-                {
-
-                    Invoke(() =>
-                    {
-                        HHCProgressBar.Value = Math.Min(velocity, HHCProgressBar.Maximum);
-                    });
-                }
-            }
-        }
-        //############################# FIM SERIAL MAMAGER ####################################
-
+        
         private void MidiMonitorClearButton_Click(object? sender, EventArgs? e)
         {
-            MidiMonitorTextBox.Clear();
+            //MidiMonitorListBox.Clear();
         }
 
         private void PadConfigUploadButton_Click(object? sender, EventArgs? e)
@@ -266,6 +226,33 @@ namespace DyDrums.UI
                     config.Channel
                 );
             }
+        }
+
+        // Conecte esse método ao evento que recebe os dados MIDI
+        private void OnMidiMessageReceived(int channel, int note, int velocity)
+        {
+            Invoke(() =>
+            {                
+                string timestamp = DateTime.Now.ToString("ss,fff");
+                MidiMonitorListBox.Items.Add($"[{timestamp}] => Canal: {channel}, Nota: {note}, Velocity: {velocity}");
+
+                if (MidiMonitorListBox.Items.Count > 100)
+                    MidiMonitorListBox.Items.RemoveAt(0);
+
+                // Envia para o MIDI
+                midiManager.SendNoteOn(note, velocity, 0);
+                Task.Run(async () =>
+                {
+                    await Task.Delay(80);
+                    midiManager.SendNoteOff(note, 0);
+                });
+
+                // Atualiza barra de Hi-Hat (nota 4 por padrão)
+                if (note == 4)
+                {
+                    HHCProgressBar.Value = Math.Min(velocity, HHCProgressBar.Maximum);
+                }
+            });
         }
     }
 }

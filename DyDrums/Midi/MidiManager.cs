@@ -9,6 +9,7 @@ namespace DyDrums.Midi
 {
     public class MidiManager
     {
+        public event Action<int, int, int>? MidiMessageReceived;        
         public void Initialize() { /* inicializa MIDI */ }
         public void SendNote(int note, int velocity) { /* envia nota */ }
 
@@ -58,6 +59,11 @@ namespace DyDrums.Midi
                 int midiChannel = channel & 0x0F;
                 int message = (0x80 | midiChannel) | (note << 8) | (velocity << 16);
                 midiOut.Send(message);
-            }        
+            }
+            public void HandleIncomingMidiMessage(int status, int data1, int data2)
+            {
+                // Chame o evento para notificar o MainForm (ou quem estiver inscrito)
+                MidiMessageReceived?.Invoke(status, data1, data2);
+            }
     }
 }

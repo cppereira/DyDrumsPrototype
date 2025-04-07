@@ -14,11 +14,13 @@ namespace DyDrums.Serial
 {
    public class SerialManager
     {
+        public event Action<int, int, int>? MidiMessageReceived;
         private static SerialPort? serialPort;
         private static List<byte> currentSysex = new();
         private static List<byte[]> fullSysexMessages = new();
         private static PadManager padManager = new PadManager();
-        private readonly MainForm mainForm;
+        private readonly MainForm? mainForm;
+
 
         public event EventHandler<byte[]>? DataReceived;
 
@@ -26,7 +28,7 @@ namespace DyDrums.Serial
 
         
 
-        public static void Initialize(string portName)
+        public void Initialize(string portName)
         {
             serialPort = new SerialPort(portName, 115200);
             serialPort.DataReceived += SerialPort_DataReceived;
@@ -63,57 +65,69 @@ namespace DyDrums.Serial
             }
         }
 
-        private static void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //Debug.WriteLine("Dados recebidos!");
-
             try
             {
-                if (serialPort != null && serialPort.IsOpen)
+                while (serialPort != null && serialPort.IsOpen && serialPort.BytesToRead > 0)
                 {
-                    while (serialPort.BytesToRead > 0)
+                    int b = serialPort.ReadByte();
+
+                    if (b == 0xF0) // Início de Sysex
                     {
-
-                        int b = serialPort.ReadByte();
-                        //Debug.WriteLine($"Byte recebido: {b:X2} ({b})");
-
-                        if (b == 0xF0)
-                        {
-                            currentSysex.Clear();
-                            currentSysex.Add((byte)b);
-                        }
-                        else if (b == 0xF7)
-                        {
-                            currentSysex.Add((byte)b);
-                            fullSysexMessages.Add(currentSysex.ToArray());
-                            currentSysex.Clear();
-
-                            // Repasse pro PadManager
-                            MainForm.Instance.BeginInvoke(new Action(() =>
-                            {
-
-                                padManager.ProcessSysex(fullSysexMessages, MainForm.Instance.PadsTable);
-                                fullSysexMessages.Clear();
-                            }));
-                        }
-                        else if (currentSysex.Count > 0)
-                        {
-                            currentSysex.Add((byte)b);
-                        }                        
+                        currentSysex.Clear();
+                        currentSysex.Add((byte)b);
                     }
-                }
-                else
-                {
-                    Console.WriteLine("[INFO] Porta serial não está aberta, pulando leitura.");
+                    else if (b == 0xF7) // Fim de Sysex
+                    {
+                        currentSysex.Add((byte)b);
+                        fullSysexMessages.Add(currentSysex.ToArray());
+                        currentSysex.Clear();
+
+                        // Repasse pro PadManager (na thread da UI)
+                        MainForm.Instance.BeginInvoke(new Action(() =>
+                        {
+                            padManager.ProcessSysex(fullSysexMessages, MainForm.Instance.PadsTable);
+                            fullSysexMessages.Clear();
+                        }));
+                    }
+                    else if (currentSysex.Count > 0)
+                    {
+                        // Ainda no Sysex
+                        currentSysex.Add((byte)b);
+                    }
+                    else
+                    {
+                        // Caso não esteja processando Sysex, tenta processar como mensagem MIDI
+                        if (serialPort.BytesToRead >= 2) // Já leu 1 byte (status), precisa de mais 2
+                        {
+                            int channel = (b & 0x0F) + 1;
+                            int data1 = serialPort.ReadByte();
+                            int data2 = serialPort.ReadByte();
+                            MidiMessageReceived?.Invoke(channel, data1, data2);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERRO] Falha na leitura da porta serial: {ex.Message}");
+                Console.WriteLine($"[ERRO] Falha ao ler dados da porta serial: {ex.Message}");
             }
         }
 
-        
+
+        //public void ProcessIncomingData()
+        //{
+        //    while (serialPort != null && serialPort.IsOpen && serialPort.BytesToRead >= 3)
+        //    {
+        //        int status = serialPort.ReadByte();
+        //        int data1 = serialPort.ReadByte();
+        //        int data2 = serialPort.ReadByte();
+
+        //        MidiMessageReceived?.Invoke(status, data1, data2);
+        //    }
+        //}
+
         public void Handshake()
         {
             const int totalPads = 15;
