@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using DyDrums.Midi;
 using DyDrums.Models;
+using DyDrums.Services;
 using static DyDrums.UI.PadEditorForm;
 
 namespace DyDrums.UI
@@ -16,12 +18,22 @@ namespace DyDrums.UI
 
     public partial class PadEditorForm : Form
     {
+
+        private readonly EEPROMService _eepromService;
+        private MidiManager midiManager;
+        private PadConfig originalPad;
         private PadConfig pad;
-        public PadEditorForm(PadConfig padToEdit)
+
+
+
+        public PadEditorForm(PadConfig padToEdit, EEPROMService eepromService)
         {
             InitializeComponent();
-            this.pad = padToEdit;
+            this.originalPad = padToEdit;
+            this.midiManager = midiManager;
+            _eepromService = eepromService;
 
+            PreencherCampos(originalPad);
 
             PadEditorMidiNoteComboBox.DropDownStyle = ComboBoxStyle.DropDown;
             PadEditorMidiNoteComboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -53,7 +65,7 @@ namespace DyDrums.UI
 
 
             //Preenche o TextBox com o nome do PAD
-            PadEditorPadNameTextBox.Text = pad.Name;
+            PadEditorPadNameTextBox.Text = originalPad.Name;
 
             //Preenche o ComboBox de notas com notas de 0 a 99
             for (int i = 0; i <= 99; i++)
@@ -66,7 +78,7 @@ namespace DyDrums.UI
             }
             PadEditorMidiNoteComboBox.SelectedItem = PadEditorMidiNoteComboBox.Items
                 .Cast<ComboItem>()
-                .FirstOrDefault(item => item.Value == pad.Note);
+                .FirstOrDefault(item => item.Value == originalPad.Note);
 
             //Preenche o ComboBox Type com os tipos de sensor.
             PadEditorSensorTypeComboBox.Items.AddRange(new[]
@@ -78,30 +90,30 @@ namespace DyDrums.UI
             });
             PadEditorSensorTypeComboBox.SelectedItem = PadEditorSensorTypeComboBox.Items
                 .Cast<ComboItem>()
-                .FirstOrDefault(item => item.Value == pad.Type);
+                .FirstOrDefault(item => item.Value == originalPad.Type);
 
             //Preenche o valor correto de Threshold
-            PadEditorThresholdTrackBar.Value = pad.Threshold;
-            PadEditorThresholdTextBox.Text = pad.Threshold.ToString();
+            PadEditorThresholdTrackBar.Value = originalPad.Threshold;
+            PadEditorThresholdTextBox.Text = originalPad.Threshold.ToString();
 
             //Preenche o valor correto de ScanTime
-            PadEditorScanTimeTrackBar.Value = pad.ScanTime;
-            PadEditorScanTimeTextBox.Text = pad.Threshold.ToString();
+            PadEditorScanTimeTrackBar.Value = originalPad.ScanTime;
+            PadEditorScanTimeTextBox.Text = originalPad.Threshold.ToString();
 
             //Preenche o valor correto de MaskTime
-            PadEditorMaskTimeTrackBar.Value = pad.MaskTime;
-            PadEditorMaskTimeTextBox.Text = pad.MaskTime.ToString();
+            PadEditorMaskTimeTrackBar.Value = originalPad.MaskTime;
+            PadEditorMaskTimeTextBox.Text = originalPad.MaskTime.ToString();
 
             //Preenche o valor correto de Retrigger
-            PadEditorRetriggerTrackBar.Value = pad.Retrigger;
-            PadEditorRetriggerTextBox.Text = pad.Retrigger.ToString();
+            PadEditorRetriggerTrackBar.Value = originalPad.Retrigger;
+            PadEditorRetriggerTextBox.Text = originalPad.Retrigger.ToString();
 
             //Preenche o valor correto de CurveForm
-            PadEditorCurveFormTrackBar.Value = pad.CurveForm;
-            PadEditorCurveFormTextBox.Text = pad.CurveForm.ToString();
+            PadEditorCurveFormTrackBar.Value = originalPad.CurveForm;
+            PadEditorCurveFormTextBox.Text = originalPad.CurveForm.ToString();
 
             //Preenche o valor correto de Gain
-            PadEditorGainTextBox.Text = pad.Gain.ToString();
+            PadEditorGainTextBox.Text = originalPad.Gain.ToString();
 
             //Preenche o valor correto de Curve
             PadEditorCurveComboBox.Items.AddRange(new[]
@@ -114,7 +126,12 @@ namespace DyDrums.UI
             });
             PadEditorCurveComboBox.SelectedItem = PadEditorCurveComboBox.Items
                 .Cast<ComboItem>()
-                .FirstOrDefault(item => item.Value == pad.Type);
+                .FirstOrDefault(item => item.Value == originalPad.Type);
+        }
+
+        public PadEditorForm(PadConfig pad)
+        {
+            this.pad = pad;
         }
 
         public static string GetNoteName(int midiNote)
@@ -127,23 +144,27 @@ namespace DyDrums.UI
 
         private void PadEditorSaveButton_Click(object sender, EventArgs e)
         {
-            pad.Name = PadEditorPadNameTextBox.Text;
-            pad.Type = PadEditorSensorTypeComboBox.SelectedIndex;
-            pad.Note = PadEditorMidiNoteComboBox.SelectedIndex;
-            pad.Threshold = Int32.Parse(PadEditorThresholdTextBox.Text);
-            pad.ScanTime = PadEditorScanTimeTrackBar.Value;
-            pad.MaskTime = PadEditorMaskTimeTrackBar.Value;
-            pad.Retrigger = PadEditorRetriggerTrackBar.Value;
-            pad.Curve = PadEditorCurveComboBox.SelectedIndex;
-            pad.CurveForm = PadEditorCurveComboBox.SelectedIndex;            
-            pad.Xtalk = Int32.Parse(PadEditorXTalkTextBox.Text);
-            pad.XtalkGroup = Convert.ToInt32(Math.Round(PadEditorXTalkGroupNumericUpDown.Value));
-            pad.Channel = Convert.ToInt32(Math.Round(PadEditorChannelNumericUpDown.Value));
-            pad.Gain = Int32.Parse(PadEditorGainTextBox.Text);
+            originalPad.Name = PadEditorPadNameTextBox.Text;
+            originalPad.Type = PadEditorSensorTypeComboBox.SelectedIndex;
+            originalPad.Note = PadEditorMidiNoteComboBox.SelectedIndex;
+            originalPad.Threshold = PadEditorThresholdTrackBar.Value;
+            originalPad.ScanTime = PadEditorScanTimeTrackBar.Value;
+            originalPad.MaskTime = PadEditorMaskTimeTrackBar.Value;
+            originalPad.Retrigger = PadEditorRetriggerTrackBar.Value;
+            originalPad.Curve = PadEditorCurveComboBox.SelectedIndex;
+            originalPad.CurveForm = PadEditorCurveFormTrackBar.Value;
+            originalPad.Gain = PadEditorGainTrackBar.Value;
+            originalPad.Xtalk = int.TryParse(PadEditorXTalkTextBox.Text, out var xtalk) ? xtalk : 0;
+            originalPad.XtalkGroup = (int)PadEditorXTalkGroupNumericUpDown.Value;
+            originalPad.Channel = (int)PadEditorChannelNumericUpDown.Value;
+
+            _eepromService.SendPadToEEPROM(originalPad);
 
             DialogResult = DialogResult.OK;
             Close();
+
         }
+
 
         public class ComboItem
         {
@@ -153,6 +174,102 @@ namespace DyDrums.UI
             public override string ToString() => Text; // Mostra o texto no ComboBox
         }
 
-        
+
+        private void PreencherCampos(PadConfig pad)
+        {
+            PadEditorPadNameTextBox.Text = pad.Name;
+            PadEditorSensorTypeComboBox.SelectedItem = PadEditorSensorTypeComboBox.Items
+                .Cast<ComboItem>().FirstOrDefault(item => item.Value == pad.Type);
+            PadEditorMidiNoteComboBox.SelectedItem = PadEditorMidiNoteComboBox.Items
+                .Cast<ComboItem>().FirstOrDefault(item => item.Value == pad.Note);
+            PadEditorThresholdTextBox.Text = pad.Threshold.ToString();
+            PadEditorScanTimeTextBox.Text = pad.ScanTime.ToString();
+            PadEditorMaskTimeTextBox.Text = pad.MaskTime.ToString();
+            PadEditorRetriggerTextBox.Text = pad.Retrigger.ToString();
+            PadEditorCurveComboBox.SelectedValue = pad.Curve;
+            PadEditorCurveFormTextBox.Text = pad.CurveForm.ToString();
+            PadEditorGainTextBox.Text = pad.Gain.ToString();
+            PadEditorXTalkTextBox.Text = pad.Xtalk.ToString();
+            PadEditorXTalkGroupNumericUpDown.Value = pad.XtalkGroup;
+            PadEditorChannelNumericUpDown.Value = pad.Channel;
+        }
+
+        public PadConfig GetUpdatedPad()
+        {
+            return originalPad;
+        }
+
+        public PadConfig GetEditedPad()
+        {
+            return originalPad;
+        }
+
+        private void PadEditorThresholdTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorThresholdTextBox.Text = PadEditorThresholdTrackBar.Value.ToString();
+        }
+
+        private void PadEditorScanTimeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorScanTimeTextBox.Text = PadEditorScanTimeTrackBar.Value.ToString();
+        }
+
+        private void PadEditorMaskTimeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorMaskTimeTextBox.Text = PadEditorMaskTimeTrackBar.Value.ToString();
+        }
+
+        private void PadEditorRetriggerTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorRetriggerTextBox.Text = PadEditorRetriggerTrackBar.Value.ToString();
+        }
+
+        private void PadEditorCurveFormTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorCurveFormTextBox.Text = PadEditorCurveFormTrackBar.Value.ToString();
+        }
+
+        private void PadEditorGainTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorGainTextBox.Text = PadEditorGainTrackBar.Value.ToString();
+        }
+
+        private void PadEditorXTalkTrackBar_Scroll(object sender, EventArgs e)
+        {
+            PadEditorXTalkTextBox.Text = PadEditorXTalkTrackBar.Value.ToString();
+        }
+
+        //##################################################################################
+        private void PadEditorThresholdTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorThresholdTrackBar.Value = Int32.Parse(PadEditorThresholdTextBox.Text);
+        }
+
+        private void PadEditorScanTimeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorScanTimeTrackBar.Value = Int32.Parse(PadEditorScanTimeTextBox.Text);
+        }
+
+        private void PadEditorMaskTimeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorMaskTimeTrackBar.Value = Int32.Parse(PadEditorMaskTimeTextBox.Text);
+        }
+
+        private void PadEditorRetriggerTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorRetriggerTrackBar.Value = Int32.Parse(PadEditorRetriggerTextBox.Text);
+        }
+
+        private void PadEditorCurveFormTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorCurveFormTrackBar.Value = Int32.Parse(PadEditorCurveFormTextBox.Text);
+        }
+
+        private void PadEditorGainTextBox_TextChanged(object sender, EventArgs e)
+        {
+            PadEditorGainTrackBar.Value = Int32.Parse(PadEditorGainTextBox.Text);
+        }
+
+
     }
 }

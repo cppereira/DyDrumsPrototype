@@ -20,11 +20,10 @@ namespace DyDrums.UI
         private readonly SerialManager serialManager = new();
         private readonly MidiManager midiManager = new();
         private readonly PadManager padManager = new PadManager();
-        private readonly EEPROMService eepromService = new();
         private readonly ConfigManager configManager = new();
         private static List<byte[]> receivedMessages = new();
-
-
+        private List<PadConfig> allPads;
+        private EEPROMService eepromService;
 
         public static MainForm Instance { get; private set; }
 
@@ -33,6 +32,7 @@ namespace DyDrums.UI
             InitializeComponent();
             midiManager.Initialize();
             padManager = new PadManager();
+            eepromService = new EEPROMService(serialManager);
             Instance = this;
         }
 
@@ -50,6 +50,8 @@ namespace DyDrums.UI
             //MessageBox.Show($"[DEBUG] {pads.Count} pads carregados do JSON.");
             padManager.LoadConfigs(pads);
             PadsTable.CellDoubleClick += PadsTable_CellDoubleClick;
+            allPads = padManager.GetAllConfigs();
+            RefreshPadsTable();
 
         }
 
@@ -158,17 +160,6 @@ namespace DyDrums.UI
         }
         //######################## FIM GROUP BOX DE CONEXÃO ###############################
 
-
-        private void MidiMonitorClearButton_Click(object? sender, EventArgs? e)
-        {
-            //MidiMonitorListBox.Clear();
-        }
-
-        private void PadConfigUploadButton_Click(object? sender, EventArgs? e)
-        {
-            SaveConfig();
-        }
-
         private void PadConfigDownloadButton_Click(object? sender, EventArgs? e)
         {
             padManager.ResetSysexProcessing();
@@ -220,7 +211,7 @@ namespace DyDrums.UI
             Invoke(() =>
             {
                 string timestamp = DateTime.Now.ToString("ss,fff");
-                string formatted = string.Format("[{0}] => Canal: {1,-2} | Nota: {2,-3} | Vel: {3,-3}", timestamp, channel, note, velocity);
+                string formatted = string.Format("[{0}] => Canal: {1,-2} | Nota: {2,-3} | Velocity: {3,-3}", timestamp, channel, note, velocity);
                 MidiMonitorTextBox.AppendText(formatted + Environment.NewLine);
                 MidiMonitorTextBox.SelectionStart = MidiMonitorTextBox.Text.Length;
                 MidiMonitorTextBox.ScrollToCaret();
@@ -230,8 +221,8 @@ namespace DyDrums.UI
                 midiManager.SendNoteOn(note, velocity, 0);
                 Task.Run(async () =>
                 {
-                    await Task.Delay(80);
-                    midiManager.SendNoteOff(note, 0);
+                    await Task.Delay(5);
+                    midiManager.PlayNoteSafe(note, velocity, 20, channel);
                 });
 
                 // Atualiza barra de Hi-Hat (nota 4 por padrão)
@@ -245,21 +236,18 @@ namespace DyDrums.UI
 
         private void PadsTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Pra garantir que não clicou no cabeçalho
+            if (e.RowIndex >= 0)
             {
-                var row = PadsTable.Rows[e.RowIndex];
 
-                // Você precisa extrair o PadConfig correspondente a essa linha
-                // Idealmente, você teria um mapeamento direto via índice ou algo parecido
-                var pad = padManager.GetPadByIndex(e.RowIndex); // ← implementa isso aí se não tiver ainda
+                var pad = allPads[e.RowIndex];
+                var editorForm = new PadEditorForm(pad, eepromService);
 
-                var editorForm = new PadEditorForm(pad); // <- Passa o pad atual pro modal
 
                 if (editorForm.ShowDialog() == DialogResult.OK)
                 {
-                    // O usuário editou e salvou, então atualiza a tabela
+                    // O pad já foi alterado por referência
+                    configManager.SaveToFile(allPads);
                     RefreshPadsTable();
-                    configManager.SaveToFile(padManager.GetAllConfigs());
                 }
             }
         }

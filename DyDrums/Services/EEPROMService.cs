@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DyDrums.Models;
-
+using DyDrums.Serial;
 
 namespace DyDrums.Services
 {
     public class EEPROMService
     {
-        private static Dictionary<int, PadConfig> padConfigsInProgress = new Dictionary<int, PadConfig>();
-        private static Dictionary<int, PadConfig> padCache = new();
+        private readonly SerialManager serialManager;
 
-
+       public EEPROMService(SerialManager serialManager)
+        {
+            this.serialManager = serialManager;
+        }
 
         public static List<PadConfig> ParseSysex(List<byte[]> sysexMessages)
         {
@@ -32,7 +32,6 @@ namespace DyDrums.Services
                 int param = message[4];
                 int value = message[5];
 
-                // Só aceita pinos entre 0 e 14
                 if (pin < 0 || pin > 14)
                 {
                     Debug.WriteLine($"[AVISO] Pino fora do intervalo esperado: {pin}");
@@ -68,5 +67,20 @@ namespace DyDrums.Services
             return padMap.Values.ToList();
         }
 
+        public void SendPadToEEPROM(PadConfig pad)
+        {
+            serialManager.SendSysExToArduino(pad.Pin, 0x00, pad.Note);
+            serialManager.SendSysExToArduino(pad.Pin, 0x01, pad.Threshold);
+            serialManager.SendSysExToArduino(pad.Pin, 0x02, pad.ScanTime);
+            serialManager.SendSysExToArduino(pad.Pin, 0x03, pad.MaskTime);
+            serialManager.SendSysExToArduino(pad.Pin, 0x04, pad.Retrigger);
+            serialManager.SendSysExToArduino(pad.Pin, 0x05, pad.Curve);
+            serialManager.SendSysExToArduino(pad.Pin, 0x06, pad.Xtalk);
+            serialManager.SendSysExToArduino(pad.Pin, 0x07, pad.XtalkGroup);
+            serialManager.SendSysExToArduino(pad.Pin, 0x08, pad.CurveForm);
+            serialManager.SendSysExToArduino(pad.Pin, 0x09, pad.Gain);
+            serialManager.SendSysExToArduino(pad.Pin, 0x0D, pad.Type);
+            serialManager.SendSysExToArduino(pad.Pin, 0x0E, pad.Channel);
+        }
     }
 }

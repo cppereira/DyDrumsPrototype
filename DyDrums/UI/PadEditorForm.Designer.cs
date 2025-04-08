@@ -166,6 +166,7 @@
             PadEditorXTalkTrackBar.Name = "PadEditorXTalkTrackBar";
             PadEditorXTalkTrackBar.Size = new Size(130, 45);
             PadEditorXTalkTrackBar.TabIndex = 53;
+            PadEditorXTalkTrackBar.Scroll += PadEditorXTalkTrackBar_Scroll;
             // 
             // PadEditorXTalkTrackBarLabel
             // 
@@ -211,6 +212,7 @@
             PadEditorScanTimeTrackBar.Name = "PadEditorScanTimeTrackBar";
             PadEditorScanTimeTrackBar.Size = new Size(130, 45);
             PadEditorScanTimeTrackBar.TabIndex = 21;
+            PadEditorScanTimeTrackBar.Scroll += PadEditorScanTimeTrackBar_Scroll;
             // 
             // PadEditorPadNameTextBox
             // 
@@ -236,6 +238,7 @@
             PadEditorCurveFormTextBox.Size = new Size(36, 23);
             PadEditorCurveFormTextBox.TabIndex = 46;
             PadEditorCurveFormTextBox.Text = "0";
+            PadEditorCurveFormTextBox.TextChanged += PadEditorCurveFormTextBox_TextChanged;
             // 
             // PadEditorCurveFormTrackBar
             // 
@@ -245,6 +248,7 @@
             PadEditorCurveFormTrackBar.Name = "PadEditorCurveFormTrackBar";
             PadEditorCurveFormTrackBar.Size = new Size(130, 45);
             PadEditorCurveFormTrackBar.TabIndex = 45;
+            PadEditorCurveFormTrackBar.Scroll += PadEditorCurveFormTrackBar_Scroll;
             // 
             // PadEditorMidiNoteLabel
             // 
@@ -272,6 +276,7 @@
             PadEditorThresholdTrackBar.Name = "PadEditorThresholdTrackBar";
             PadEditorThresholdTrackBar.Size = new Size(130, 45);
             PadEditorThresholdTrackBar.TabIndex = 15;
+            PadEditorThresholdTrackBar.Scroll += PadEditorThresholdTrackBar_Scroll;
             // 
             // PadEditorGainTextBox
             // 
@@ -281,6 +286,7 @@
             PadEditorGainTextBox.Size = new Size(36, 23);
             PadEditorGainTextBox.TabIndex = 42;
             PadEditorGainTextBox.Text = "0";
+            PadEditorGainTextBox.TextChanged += PadEditorGainTextBox_TextChanged;
             // 
             // PadEditorThresholdTrackBarLabel
             // 
@@ -299,6 +305,7 @@
             PadEditorGainTrackBar.Name = "PadEditorGainTrackBar";
             PadEditorGainTrackBar.Size = new Size(130, 45);
             PadEditorGainTrackBar.TabIndex = 39;
+            PadEditorGainTrackBar.Scroll += PadEditorGainTrackBar_Scroll;
             // 
             // PadEditorThresholdTextBox
             // 
@@ -308,6 +315,7 @@
             PadEditorThresholdTextBox.Size = new Size(36, 23);
             PadEditorThresholdTextBox.TabIndex = 17;
             PadEditorThresholdTextBox.Text = "0";
+            PadEditorThresholdTextBox.TextChanged += PadEditorThresholdTextBox_TextChanged;
             // 
             // PadEditorGainTrackBarLabel
             // 
@@ -326,6 +334,7 @@
             PadEditorMaskTimeTrackBar.Name = "PadEditorMaskTimeTrackBar";
             PadEditorMaskTimeTrackBar.Size = new Size(130, 45);
             PadEditorMaskTimeTrackBar.TabIndex = 18;
+            PadEditorMaskTimeTrackBar.Scroll += PadEditorMaskTimeTrackBar_Scroll;
             // 
             // PadEditorCurveFormTrackBarLabel
             // 
@@ -362,6 +371,7 @@
             PadEditorMaskTimeTextBox.Size = new Size(36, 23);
             PadEditorMaskTimeTextBox.TabIndex = 20;
             PadEditorMaskTimeTextBox.Text = "0";
+            PadEditorMaskTimeTextBox.TextChanged += PadEditorMaskTimeTextBox_TextChanged;
             // 
             // PadEditorScanTimeTrackBarLabel
             // 
@@ -380,6 +390,7 @@
             PadEditorScanTimeTextBox.Size = new Size(36, 23);
             PadEditorScanTimeTextBox.TabIndex = 23;
             PadEditorScanTimeTextBox.Text = "0";
+            PadEditorScanTimeTextBox.TextChanged += PadEditorScanTimeTextBox_TextChanged;
             // 
             // PadEditorRetriggerTrackBar
             // 
@@ -389,6 +400,7 @@
             PadEditorRetriggerTrackBar.Name = "PadEditorRetriggerTrackBar";
             PadEditorRetriggerTrackBar.Size = new Size(130, 45);
             PadEditorRetriggerTrackBar.TabIndex = 24;
+            PadEditorRetriggerTrackBar.Scroll += PadEditorRetriggerTrackBar_Scroll;
             // 
             // PadEditorRetriggerTrackBarLabel
             // 
@@ -407,6 +419,7 @@
             PadEditorRetriggerTextBox.Size = new Size(36, 23);
             PadEditorRetriggerTextBox.TabIndex = 26;
             PadEditorRetriggerTextBox.Text = "0";
+            PadEditorRetriggerTextBox.TextChanged += PadEditorRetriggerTextBox_TextChanged;
             // 
             // PadEditorSaveButton
             // 

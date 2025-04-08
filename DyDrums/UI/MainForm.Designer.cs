@@ -72,7 +72,7 @@
             // groupBox3
             // 
             groupBox3.Controls.Add(PadsTable);
-            groupBox3.Location = new Point(271, 135);
+            groupBox3.Location = new Point(353, 135);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(644, 509);
             groupBox3.TabIndex = 59;
@@ -233,7 +233,7 @@
             groupBox2.Controls.Add(ConnectCheckBox);
             groupBox2.Controls.Add(MidiDeviceLabel);
             groupBox2.Controls.Add(MidiDevicesComboBox);
-            groupBox2.Location = new Point(271, 12);
+            groupBox2.Location = new Point(353, 12);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(644, 65);
             groupBox2.TabIndex = 58;
@@ -258,7 +258,7 @@
             // 
             HiHatProgressBarLabel.AutoSize = true;
             HiHatProgressBarLabel.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            HiHatProgressBarLabel.Location = new Point(223, 15);
+            HiHatProgressBarLabel.Location = new Point(287, 21);
             HiHatProgressBarLabel.Name = "HiHatProgressBarLabel";
             HiHatProgressBarLabel.Size = new Size(33, 13);
             HiHatProgressBarLabel.TabIndex = 32;
@@ -273,7 +273,7 @@
             groupBox4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             groupBox4.Location = new Point(9, 12);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(256, 632);
+            groupBox4.Size = new Size(338, 632);
             groupBox4.TabIndex = 60;
             groupBox4.TabStop = false;
             groupBox4.Text = "Monitor";
@@ -285,7 +285,7 @@
             MidiMonitorTextBox.Location = new Point(6, 41);
             MidiMonitorTextBox.Name = "MidiMonitorTextBox";
             MidiMonitorTextBox.ScrollBars = RichTextBoxScrollBars.None;
-            MidiMonitorTextBox.Size = new Size(218, 585);
+            MidiMonitorTextBox.Size = new Size(264, 585);
             MidiMonitorTextBox.TabIndex = 37;
             MidiMonitorTextBox.Text = "";
             // 
@@ -293,7 +293,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(68, 15);
+            label1.Location = new Point(75, 21);
             label1.Name = "label1";
             label1.Size = new Size(94, 13);
             label1.TabIndex = 36;
@@ -301,15 +301,15 @@
             // 
             // HHCVerticalProgressBar
             // 
-            HHCVerticalProgressBar.Location = new Point(230, 39);
+            HHCVerticalProgressBar.Location = new Point(294, 41);
             HHCVerticalProgressBar.Name = "HHCVerticalProgressBar";
-            HHCVerticalProgressBar.Size = new Size(19, 587);
+            HHCVerticalProgressBar.Size = new Size(19, 585);
             HHCVerticalProgressBar.TabIndex = 35;
             // 
             // PadConfigDownloadButton
             // 
             PadConfigDownloadButton.Enabled = false;
-            PadConfigDownloadButton.Location = new Point(271, 86);
+            PadConfigDownloadButton.Location = new Point(353, 86);
             PadConfigDownloadButton.Name = "PadConfigDownloadButton";
             PadConfigDownloadButton.Size = new Size(172, 36);
             PadConfigDownloadButton.TabIndex = 61;
@@ -321,7 +321,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(923, 673);
+            ClientSize = new Size(1009, 654);
             Controls.Add(PadConfigDownloadButton);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);

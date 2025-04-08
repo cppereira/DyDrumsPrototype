@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DyDrums.Models;
 using NAudio.Midi;
 
 namespace DyDrums.Midi
@@ -37,6 +38,8 @@ namespace DyDrums.Midi
                     }
                 }
                 return false;
+
+
             }
 
             public void Disconnect()
@@ -60,7 +63,15 @@ namespace DyDrums.Midi
                 int message = (0x80 | midiChannel) | (note << 8) | (velocity << 16);
                 midiOut.Send(message);
             }
-            public void HandleIncomingMidiMessage(int status, int data1, int data2)
+
+        public async void PlayNoteSafe(int note, int velocity, int durationMs = 10, int channel = 0)
+        {
+            SendNoteOn((byte)note, (byte)velocity, (byte)channel);
+            await Task.Delay(durationMs);
+            SendNoteOff((byte)note, (byte)channel);
+        }
+
+        public void HandleIncomingMidiMessage(int status, int data1, int data2)
             {
                 // Chame o evento para notificar o MainForm (ou quem estiver inscrito)
                 MidiMessageReceived?.Invoke(status, data1, data2);
