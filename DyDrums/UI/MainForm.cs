@@ -14,7 +14,7 @@ namespace DyDrums.UI
     {
 
         // Contante para o HHC, depois implementar para pegar ele do arquivo ou da EEPROM...
-        private const int HHCNote = 4; 
+        private const int HHCNote = 4;
 
         private readonly SerialManager serialManager = new();
         private readonly MidiManager midiManager = new();
@@ -31,7 +31,7 @@ namespace DyDrums.UI
         {
             InitializeComponent();
             midiManager.Initialize();
-            padManager = new PadManager();            
+            padManager = new PadManager();
             Instance = this;
         }
 
@@ -48,7 +48,7 @@ namespace DyDrums.UI
             var pads = configManager.LoadFromFile();
             //MessageBox.Show($"[DEBUG] {pads.Count} pads carregados do JSON.");
             padManager.LoadConfigs(pads);
-            
+
         }
 
         //################### GROUP BOX DE CONEXÃO ####################################
@@ -125,12 +125,11 @@ namespace DyDrums.UI
                     COMPortsScanButton.Enabled = false;
                     MidiDevicesComboBox.Enabled = false;
                     MidiDevicesScanButton.Enabled = false;
-                    MidiMonitorListBox.Enabled = true;
-                    MidiMonitorClearButton.Enabled = true;
+                    MidiMonitorTextBox.Enabled = true;
                     PadConfigDownloadButton.Enabled = true;
                     PadConfigUploadButton.Enabled = true;
                     PadNameTextBox.Enabled = true;
-                    MidiNoteNumericUpDown.Enabled = true;
+                    MidiNoteComboBox.Enabled = true;
                     ThresholdTrackbar.Enabled = true;
                     ScanTimeTrackBar.Enabled = true;
                     MaskTimeTrackBar.Enabled = true;
@@ -138,6 +137,8 @@ namespace DyDrums.UI
                     CurveComboBox.Enabled = true;
                     CurveFormTrackBar.Enabled = true;
                     GainTrackBar.Enabled = true;
+                    HHCVerticalProgressBar.Enabled = true;
+                    PadsTable.Enabled = true;
                 }
                 else
                 {
@@ -149,12 +150,11 @@ namespace DyDrums.UI
                     COMPortsScanButton.Enabled = true;
                     MidiDevicesComboBox.Enabled = true;
                     MidiDevicesScanButton.Enabled = true;
-                    MidiMonitorListBox.Enabled = false;
-                    MidiMonitorClearButton.Enabled = false;
+                    MidiMonitorTextBox.Enabled = false;
                     PadConfigDownloadButton.Enabled = false;
                     PadConfigUploadButton.Enabled = false;
                     PadNameTextBox.Enabled = false;
-                    MidiNoteNumericUpDown.Enabled = false;
+                    MidiNoteComboBox.Enabled = false;
                     ThresholdTrackbar.Enabled = false;
                     ScanTimeTrackBar.Enabled = false;
                     MaskTimeTrackBar.Enabled = false;
@@ -162,6 +162,10 @@ namespace DyDrums.UI
                     CurveComboBox.Enabled = false;
                     CurveFormTrackBar.Enabled = false;
                     GainTrackBar.Enabled = false;
+                    HHCVerticalProgressBar.Enabled = false;
+                    HHCVerticalProgressBar.Value = 0;
+                    MidiMonitorTextBox.Clear();
+                    PadsTable.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -172,7 +176,7 @@ namespace DyDrums.UI
         }
         //######################## FIM GROUP BOX DE CONEXÃO ###############################
 
-        
+
         private void MidiMonitorClearButton_Click(object? sender, EventArgs? e)
         {
             //MidiMonitorListBox.Clear();
@@ -186,13 +190,13 @@ namespace DyDrums.UI
         private void PadConfigDownloadButton_Click(object? sender, EventArgs? e)
         {
             padManager.ResetSysexProcessing();
-            serialManager.Handshake();            
+            serialManager.Handshake();
         }
 
         private void SaveConfig()
-        {   
+        {
             var currentConfigs = padManager.GetAllConfigs();
-            
+
             configManager.SaveToFile(currentConfigs);
             MessageBox.Show("Configurações salvas com sucesso!", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -204,9 +208,9 @@ namespace DyDrums.UI
         }
 
         public void RefreshPadsTable()
-        {   
+        {
             PadsTable.Rows.Clear();
-            var configs = padManager.GetAllConfigs();            
+            var configs = padManager.GetAllConfigs();
             foreach (var config in configs)
             {
                 if (string.IsNullOrWhiteSpace(config.Name)) continue;
@@ -232,12 +236,13 @@ namespace DyDrums.UI
         private void OnMidiMessageReceived(int channel, int note, int velocity)
         {
             Invoke(() =>
-            {                
+            {
                 string timestamp = DateTime.Now.ToString("ss,fff");
-                MidiMonitorListBox.Items.Add($"[{timestamp}] => Canal: {channel}, Nota: {note}, Velocity: {velocity}");
-
-                if (MidiMonitorListBox.Items.Count > 100)
-                    MidiMonitorListBox.Items.RemoveAt(0);
+                string formatted = string.Format("[{0}] => Canal: {1,-2} | Nota: {2,-3} | Vel: {3,-3}", timestamp, channel, note, velocity);
+                MidiMonitorTextBox.AppendText(formatted + Environment.NewLine);
+                MidiMonitorTextBox.SelectionStart = MidiMonitorTextBox.Text.Length;
+                MidiMonitorTextBox.ScrollToCaret();
+                Application.DoEvents();
 
                 // Envia para o MIDI
                 midiManager.SendNoteOn(note, velocity, 0);
@@ -250,9 +255,10 @@ namespace DyDrums.UI
                 // Atualiza barra de Hi-Hat (nota 4 por padrão)
                 if (note == 4)
                 {
-                    HHCProgressBar.Value = Math.Min(velocity, HHCProgressBar.Maximum);
+                    HHCVerticalProgressBar.Value = Math.Min(velocity, HHCVerticalProgressBar.Maximum);
                 }
             });
         }
+
     }
 }

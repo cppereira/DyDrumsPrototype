@@ -13,7 +13,7 @@ namespace DyDrums.Services
     {
         private static Dictionary<int, PadConfig> padConfigsInProgress = new Dictionary<int, PadConfig>();
         private static Dictionary<int, PadConfig> padCache = new();
-        private static int expectedParametersPerPad = 8;
+        
 
 
         public static List<PadConfig> ParseSysex(List<byte[]> sysexMessages)

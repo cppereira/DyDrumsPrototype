@@ -31,11 +31,9 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             ScanTimeTrackBar = new TrackBar();
             PadNameTextBox = new TextBox();
             PadNameLabel = new Label();
-            MidiNoteNumericUpDown = new NumericUpDown();
             MidiNoteLabel = new Label();
             ThresholdTrackbar = new TrackBar();
             ThresholdTrackBarLabel = new Label();
@@ -70,7 +68,6 @@
             Retrigger = new DataGridViewTextBoxColumn();
             Curve = new DataGridViewTextBoxColumn();
             CurveForm = new DataGridViewTextBoxColumn();
-            Gain = new DataGridViewTextBoxColumn();
             MidiDevicesComboBox = new ComboBox();
             MidiDeviceLabel = new Label();
             ConnectCheckBox = new CheckBox();
@@ -79,14 +76,13 @@
             MidiDevicesScanButton = new Button();
             groupBox2 = new GroupBox();
             COMPortsScanButton = new Button();
-            HHCProgressBar = new ProgressBar();
             HiHatProgressBarLabel = new Label();
-            MidiMonitorLabel = new Label();
-            MidiMonitorClearButton = new Button();
             groupBox4 = new GroupBox();
-            MidiMonitorListBox = new ListBox();
+            MidiMonitorTextBox = new RichTextBox();
+            label1 = new Label();
+            HHCVerticalProgressBar = new DyDrums.Services.VerticalProgressBar();
+            MidiNoteComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)ScanTimeTrackBar).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)MidiNoteNumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ThresholdTrackbar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)MaskTimeTrackBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)RetriggerTrackBar).BeginInit();
@@ -103,7 +99,7 @@
             // 
             ScanTimeTrackBar.Cursor = Cursors.Hand;
             ScanTimeTrackBar.Enabled = false;
-            ScanTimeTrackBar.Location = new Point(112, 252);
+            ScanTimeTrackBar.Location = new Point(82, 239);
             ScanTimeTrackBar.Maximum = 127;
             ScanTimeTrackBar.Name = "ScanTimeTrackBar";
             ScanTimeTrackBar.Size = new Size(130, 45);
@@ -112,32 +108,24 @@
             // PadNameTextBox
             // 
             PadNameTextBox.Enabled = false;
-            PadNameTextBox.Location = new Point(112, 112);
+            PadNameTextBox.Location = new Point(82, 90);
             PadNameTextBox.Name = "PadNameTextBox";
-            PadNameTextBox.Size = new Size(188, 23);
+            PadNameTextBox.Size = new Size(172, 23);
             PadNameTextBox.TabIndex = 11;
             // 
             // PadNameLabel
             // 
             PadNameLabel.AutoSize = true;
-            PadNameLabel.Location = new Point(20, 112);
+            PadNameLabel.Location = new Point(9, 90);
             PadNameLabel.Name = "PadNameLabel";
             PadNameLabel.Size = new Size(65, 15);
             PadNameLabel.TabIndex = 12;
             PadNameLabel.Text = "Pad Name:";
             // 
-            // MidiNoteNumericUpDown
-            // 
-            MidiNoteNumericUpDown.Enabled = false;
-            MidiNoteNumericUpDown.Location = new Point(112, 157);
-            MidiNoteNumericUpDown.Name = "MidiNoteNumericUpDown";
-            MidiNoteNumericUpDown.Size = new Size(188, 23);
-            MidiNoteNumericUpDown.TabIndex = 13;
-            // 
             // MidiNoteLabel
             // 
             MidiNoteLabel.AutoSize = true;
-            MidiNoteLabel.Location = new Point(20, 159);
+            MidiNoteLabel.Location = new Point(10, 145);
             MidiNoteLabel.Name = "MidiNoteLabel";
             MidiNoteLabel.Size = new Size(64, 15);
             MidiNoteLabel.TabIndex = 14;
@@ -147,7 +135,7 @@
             // 
             ThresholdTrackbar.Cursor = Cursors.Hand;
             ThresholdTrackbar.Enabled = false;
-            ThresholdTrackbar.Location = new Point(110, 200);
+            ThresholdTrackbar.Location = new Point(82, 177);
             ThresholdTrackbar.Maximum = 127;
             ThresholdTrackbar.Name = "ThresholdTrackbar";
             ThresholdTrackbar.Size = new Size(130, 45);
@@ -156,7 +144,7 @@
             // ThresholdTrackBarLabel
             // 
             ThresholdTrackBarLabel.AutoSize = true;
-            ThresholdTrackBarLabel.Location = new Point(20, 207);
+            ThresholdTrackBarLabel.Location = new Point(11, 200);
             ThresholdTrackBarLabel.Name = "ThresholdTrackBarLabel";
             ThresholdTrackBarLabel.Size = new Size(63, 15);
             ThresholdTrackBarLabel.TabIndex = 16;
@@ -165,7 +153,7 @@
             // ThresholdTextBox
             // 
             ThresholdTextBox.Enabled = false;
-            ThresholdTextBox.Location = new Point(266, 200);
+            ThresholdTextBox.Location = new Point(218, 184);
             ThresholdTextBox.MaxLength = 127;
             ThresholdTextBox.Name = "ThresholdTextBox";
             ThresholdTextBox.Size = new Size(36, 23);
@@ -176,7 +164,7 @@
             // 
             MaskTimeTrackBar.Cursor = Cursors.Hand;
             MaskTimeTrackBar.Enabled = false;
-            MaskTimeTrackBar.Location = new Point(112, 307);
+            MaskTimeTrackBar.Location = new Point(82, 296);
             MaskTimeTrackBar.Maximum = 127;
             MaskTimeTrackBar.Name = "MaskTimeTrackBar";
             MaskTimeTrackBar.Size = new Size(130, 45);
@@ -185,7 +173,7 @@
             // MaskTimeTrackBarBLabel
             // 
             MaskTimeTrackBarBLabel.AutoSize = true;
-            MaskTimeTrackBarBLabel.Location = new Point(20, 311);
+            MaskTimeTrackBarBLabel.Location = new Point(9, 310);
             MaskTimeTrackBarBLabel.Name = "MaskTimeTrackBarBLabel";
             MaskTimeTrackBarBLabel.Size = new Size(65, 15);
             MaskTimeTrackBarBLabel.TabIndex = 19;
@@ -194,7 +182,7 @@
             // MaskTimeTextBox
             // 
             MaskTimeTextBox.Enabled = false;
-            MaskTimeTextBox.Location = new Point(266, 307);
+            MaskTimeTextBox.Location = new Point(218, 303);
             MaskTimeTextBox.MaxLength = 127;
             MaskTimeTextBox.Name = "MaskTimeTextBox";
             MaskTimeTextBox.Size = new Size(36, 23);
@@ -204,7 +192,7 @@
             // ScanTimeTrackBarLabel
             // 
             ScanTimeTrackBarLabel.AutoSize = true;
-            ScanTimeTrackBarLabel.Location = new Point(20, 258);
+            ScanTimeTrackBarLabel.Location = new Point(12, 255);
             ScanTimeTrackBarLabel.Name = "ScanTimeTrackBarLabel";
             ScanTimeTrackBarLabel.Size = new Size(62, 15);
             ScanTimeTrackBarLabel.TabIndex = 22;
@@ -213,7 +201,7 @@
             // ScanTimeTextBox
             // 
             ScanTimeTextBox.Enabled = false;
-            ScanTimeTextBox.Location = new Point(266, 252);
+            ScanTimeTextBox.Location = new Point(218, 247);
             ScanTimeTextBox.MaxLength = 127;
             ScanTimeTextBox.Name = "ScanTimeTextBox";
             ScanTimeTextBox.Size = new Size(36, 23);
@@ -224,7 +212,7 @@
             // 
             RetriggerTrackBar.Cursor = Cursors.Hand;
             RetriggerTrackBar.Enabled = false;
-            RetriggerTrackBar.Location = new Point(112, 366);
+            RetriggerTrackBar.Location = new Point(82, 353);
             RetriggerTrackBar.Maximum = 127;
             RetriggerTrackBar.Name = "RetriggerTrackBar";
             RetriggerTrackBar.Size = new Size(130, 45);
@@ -233,7 +221,7 @@
             // RetriggerTrackBarLabel
             // 
             RetriggerTrackBarLabel.AutoSize = true;
-            RetriggerTrackBarLabel.Location = new Point(20, 369);
+            RetriggerTrackBarLabel.Location = new Point(16, 365);
             RetriggerTrackBarLabel.Name = "RetriggerTrackBarLabel";
             RetriggerTrackBarLabel.Size = new Size(58, 15);
             RetriggerTrackBarLabel.TabIndex = 25;
@@ -242,7 +230,7 @@
             // RetriggerTextBox
             // 
             RetriggerTextBox.Enabled = false;
-            RetriggerTextBox.Location = new Point(266, 366);
+            RetriggerTextBox.Location = new Point(218, 361);
             RetriggerTextBox.MaxLength = 127;
             RetriggerTextBox.Name = "RetriggerTextBox";
             RetriggerTextBox.Size = new Size(36, 23);
@@ -258,7 +246,8 @@
             // 
             // PadConfigDownloadButton
             // 
-            PadConfigDownloadButton.Location = new Point(170, 31);
+            PadConfigDownloadButton.Enabled = false;
+            PadConfigDownloadButton.Location = new Point(139, 35);
             PadConfigDownloadButton.Name = "PadConfigDownloadButton";
             PadConfigDownloadButton.Size = new Size(110, 36);
             PadConfigDownloadButton.TabIndex = 48;
@@ -268,13 +257,13 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(MidiNoteComboBox);
             groupBox1.Controls.Add(PadConfigDownloadButton);
             groupBox1.Controls.Add(ScanTimeTrackBar);
             groupBox1.Controls.Add(PadNameTextBox);
             groupBox1.Controls.Add(PadConfigUploadButton);
             groupBox1.Controls.Add(PadNameLabel);
             groupBox1.Controls.Add(CurveFormTextBox);
-            groupBox1.Controls.Add(MidiNoteNumericUpDown);
             groupBox1.Controls.Add(CurveFormTrackBar);
             groupBox1.Controls.Add(MidiNoteLabel);
             groupBox1.Controls.Add(CurveComboBox);
@@ -294,9 +283,9 @@
             groupBox1.Controls.Add(RetriggerTrackBar);
             groupBox1.Controls.Add(RetriggerTrackBarLabel);
             groupBox1.Controls.Add(RetriggerTextBox);
-            groupBox1.Location = new Point(709, 10);
+            groupBox1.Location = new Point(921, 10);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(318, 577);
+            groupBox1.Size = new Size(266, 576);
             groupBox1.TabIndex = 57;
             groupBox1.TabStop = false;
             groupBox1.Text = "Configurações do Pad";
@@ -304,7 +293,7 @@
             // PadConfigUploadButton
             // 
             PadConfigUploadButton.Enabled = false;
-            PadConfigUploadButton.Location = new Point(42, 31);
+            PadConfigUploadButton.Location = new Point(16, 35);
             PadConfigUploadButton.Name = "PadConfigUploadButton";
             PadConfigUploadButton.Size = new Size(110, 36);
             PadConfigUploadButton.TabIndex = 47;
@@ -315,7 +304,7 @@
             // CurveFormTextBox
             // 
             CurveFormTextBox.Enabled = false;
-            CurveFormTextBox.Location = new Point(266, 473);
+            CurveFormTextBox.Location = new Point(218, 417);
             CurveFormTextBox.MaxLength = 99;
             CurveFormTextBox.Name = "CurveFormTextBox";
             CurveFormTextBox.Size = new Size(36, 23);
@@ -326,7 +315,7 @@
             // 
             CurveFormTrackBar.Cursor = Cursors.Hand;
             CurveFormTrackBar.Enabled = false;
-            CurveFormTrackBar.Location = new Point(110, 465);
+            CurveFormTrackBar.Location = new Point(82, 410);
             CurveFormTrackBar.Maximum = 127;
             CurveFormTrackBar.Name = "CurveFormTrackBar";
             CurveFormTrackBar.Size = new Size(130, 45);
@@ -337,15 +326,15 @@
             CurveComboBox.Enabled = false;
             CurveComboBox.FormattingEnabled = true;
             CurveComboBox.ItemHeight = 15;
-            CurveComboBox.Location = new Point(112, 416);
+            CurveComboBox.Location = new Point(82, 522);
             CurveComboBox.Name = "CurveComboBox";
-            CurveComboBox.Size = new Size(188, 23);
+            CurveComboBox.Size = new Size(172, 23);
             CurveComboBox.TabIndex = 43;
             // 
             // GainTextBox
             // 
             GainTextBox.Enabled = false;
-            GainTextBox.Location = new Point(266, 515);
+            GainTextBox.Location = new Point(218, 468);
             GainTextBox.MaxLength = 99;
             GainTextBox.Name = "GainTextBox";
             GainTextBox.Size = new Size(36, 23);
@@ -356,7 +345,7 @@
             // 
             GainTrackBar.Cursor = Cursors.Hand;
             GainTrackBar.Enabled = false;
-            GainTrackBar.Location = new Point(112, 513);
+            GainTrackBar.Location = new Point(82, 467);
             GainTrackBar.Maximum = 127;
             GainTrackBar.Name = "GainTrackBar";
             GainTrackBar.Size = new Size(130, 45);
@@ -365,7 +354,7 @@
             // GainTrackBarLabel
             // 
             GainTrackBarLabel.AutoSize = true;
-            GainTrackBarLabel.Location = new Point(20, 523);
+            GainTrackBarLabel.Location = new Point(40, 475);
             GainTrackBarLabel.Name = "GainTrackBarLabel";
             GainTrackBarLabel.Size = new Size(34, 15);
             GainTrackBarLabel.TabIndex = 36;
@@ -374,7 +363,7 @@
             // CurveFormTrackBarLabel
             // 
             CurveFormTrackBarLabel.AutoSize = true;
-            CurveFormTrackBarLabel.Location = new Point(20, 475);
+            CurveFormTrackBarLabel.Location = new Point(5, 420);
             CurveFormTrackBarLabel.Name = "CurveFormTrackBarLabel";
             CurveFormTrackBarLabel.Size = new Size(69, 15);
             CurveFormTrackBarLabel.TabIndex = 35;
@@ -383,7 +372,7 @@
             // CurveTrackBarLabel
             // 
             CurveTrackBarLabel.AutoSize = true;
-            CurveTrackBarLabel.Location = new Point(20, 423);
+            CurveTrackBarLabel.Location = new Point(33, 530);
             CurveTrackBarLabel.Name = "CurveTrackBarLabel";
             CurveTrackBarLabel.Size = new Size(41, 15);
             CurveTrackBarLabel.TabIndex = 34;
@@ -392,9 +381,9 @@
             // groupBox3
             // 
             groupBox3.Controls.Add(PadsTable);
-            groupBox3.Location = new Point(9, 57);
+            groupBox3.Location = new Point(271, 77);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(692, 348);
+            groupBox3.Size = new Size(644, 509);
             groupBox3.TabIndex = 59;
             groupBox3.TabStop = false;
             groupBox3.Text = "Pads";
@@ -402,32 +391,25 @@
             // PadsTable
             // 
             PadsTable.AllowUserToOrderColumns = true;
+            PadsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            PadsTable.Columns.AddRange(new DataGridViewColumn[] { PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm });
+            PadsTable.Cursor = Cursors.Hand;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ActiveCaptionText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            PadsTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            PadsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PadsTable.Columns.AddRange(new DataGridViewColumn[] { PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm, Gain });
-            PadsTable.Cursor = Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            PadsTable.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            PadsTable.DefaultCellStyle = dataGridViewCellStyle1;
+            PadsTable.Enabled = false;
             PadsTable.Location = new Point(21, 28);
             PadsTable.MultiSelect = false;
             PadsTable.Name = "PadsTable";
             PadsTable.RowTemplate.Resizable = DataGridViewTriState.False;
             PadsTable.ScrollBars = ScrollBars.Vertical;
             PadsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            PadsTable.Size = new Size(652, 300);
+            PadsTable.Size = new Size(610, 462);
             PadsTable.TabIndex = 29;
             // 
             // PadName
@@ -482,8 +464,6 @@
             // 
             Curve.HeaderText = "Curve";
             Curve.Name = "Curve";
-            Curve.Resizable = DataGridViewTriState.False;
-            Curve.SortMode = DataGridViewColumnSortMode.NotSortable;
             Curve.Width = 70;
             // 
             // CurveForm
@@ -492,28 +472,20 @@
             CurveForm.Name = "CurveForm";
             CurveForm.Resizable = DataGridViewTriState.False;
             CurveForm.SortMode = DataGridViewColumnSortMode.NotSortable;
-            CurveForm.Width = 70;
-            // 
-            // Gain
-            // 
-            Gain.HeaderText = "Gain";
-            Gain.Name = "Gain";
-            Gain.Resizable = DataGridViewTriState.False;
-            Gain.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Gain.Width = 50;
+            CurveForm.Width = 80;
             // 
             // MidiDevicesComboBox
             // 
             MidiDevicesComboBox.FormattingEnabled = true;
-            MidiDevicesComboBox.Location = new Point(364, 14);
+            MidiDevicesComboBox.Location = new Point(362, 23);
             MidiDevicesComboBox.Name = "MidiDevicesComboBox";
-            MidiDevicesComboBox.Size = new Size(128, 23);
+            MidiDevicesComboBox.Size = new Size(125, 23);
             MidiDevicesComboBox.TabIndex = 31;
             // 
             // MidiDeviceLabel
             // 
             MidiDeviceLabel.AutoSize = true;
-            MidiDeviceLabel.Location = new Point(267, 19);
+            MidiDeviceLabel.Location = new Point(260, 26);
             MidiDeviceLabel.Name = "MidiDeviceLabel";
             MidiDeviceLabel.Size = new Size(96, 15);
             MidiDeviceLabel.TabIndex = 30;
@@ -522,7 +494,7 @@
             // ConnectCheckBox
             // 
             ConnectCheckBox.AutoSize = true;
-            ConnectCheckBox.Location = new Point(598, 18);
+            ConnectCheckBox.Location = new Point(533, 27);
             ConnectCheckBox.Name = "ConnectCheckBox";
             ConnectCheckBox.Size = new Size(81, 19);
             ConnectCheckBox.TabIndex = 48;
@@ -532,7 +504,7 @@
             // COMPortsComboBox
             // 
             COMPortsComboBox.FormattingEnabled = true;
-            COMPortsComboBox.Location = new Point(77, 15);
+            COMPortsComboBox.Location = new Point(88, 24);
             COMPortsComboBox.Name = "COMPortsComboBox";
             COMPortsComboBox.Size = new Size(128, 23);
             COMPortsComboBox.TabIndex = 5;
@@ -540,11 +512,11 @@
             // COMPortLabel
             // 
             COMPortLabel.AutoSize = true;
-            COMPortLabel.Location = new Point(8, 18);
+            COMPortLabel.Location = new Point(8, 28);
             COMPortLabel.Name = "COMPortLabel";
-            COMPortLabel.Size = new Size(63, 15);
+            COMPortLabel.Size = new Size(74, 15);
             COMPortLabel.TabIndex = 8;
-            COMPortLabel.Text = "Serial Port:";
+            COMPortLabel.Text = "Portas COM:";
             // 
             // MidiDevicesScanButton
             // 
@@ -553,7 +525,7 @@
             MidiDevicesScanButton.ImageAlign = ContentAlignment.MiddleRight;
             MidiDevicesScanButton.ImageIndex = 0;
             MidiDevicesScanButton.ImageList = imageList1;
-            MidiDevicesScanButton.Location = new Point(495, 13);
+            MidiDevicesScanButton.Location = new Point(490, 21);
             MidiDevicesScanButton.Margin = new Padding(0);
             MidiDevicesScanButton.Name = "MidiDevicesScanButton";
             MidiDevicesScanButton.Size = new Size(24, 24);
@@ -570,9 +542,9 @@
             groupBox2.Controls.Add(ConnectCheckBox);
             groupBox2.Controls.Add(MidiDeviceLabel);
             groupBox2.Controls.Add(MidiDevicesComboBox);
-            groupBox2.Location = new Point(9, 10);
+            groupBox2.Location = new Point(271, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(692, 45);
+            groupBox2.Size = new Size(644, 65);
             groupBox2.TabIndex = 58;
             groupBox2.TabStop = false;
             groupBox2.Text = "Conexão";
@@ -583,7 +555,7 @@
             COMPortsScanButton.ImageAlign = ContentAlignment.MiddleRight;
             COMPortsScanButton.ImageIndex = 0;
             COMPortsScanButton.ImageList = imageList1;
-            COMPortsScanButton.Location = new Point(210, 14);
+            COMPortsScanButton.Location = new Point(219, 23);
             COMPortsScanButton.Margin = new Padding(0);
             COMPortsScanButton.Name = "COMPortsScanButton";
             COMPortsScanButton.Size = new Size(24, 24);
@@ -591,74 +563,73 @@
             COMPortsScanButton.UseVisualStyleBackColor = true;
             COMPortsScanButton.Click += COMPortsScanButton_Click;
             // 
-            // HHCProgressBar
-            // 
-            HHCProgressBar.BackColor = Color.White;
-            HHCProgressBar.ForeColor = SystemColors.HotTrack;
-            HHCProgressBar.Location = new Point(432, 44);
-            HHCProgressBar.Maximum = 127;
-            HHCProgressBar.Name = "HHCProgressBar";
-            HHCProgressBar.Size = new Size(242, 20);
-            HHCProgressBar.Style = ProgressBarStyle.Continuous;
-            HHCProgressBar.TabIndex = 33;
-            // 
             // HiHatProgressBarLabel
             // 
             HiHatProgressBarLabel.AutoSize = true;
-            HiHatProgressBarLabel.Location = new Point(429, 23);
+            HiHatProgressBarLabel.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            HiHatProgressBarLabel.Location = new Point(223, 15);
             HiHatProgressBarLabel.Name = "HiHatProgressBarLabel";
-            HiHatProgressBarLabel.Size = new Size(82, 15);
+            HiHatProgressBarLabel.Size = new Size(33, 13);
             HiHatProgressBarLabel.TabIndex = 32;
-            HiHatProgressBarLabel.Text = "HHC Monitor:";
-            // 
-            // MidiMonitorLabel
-            // 
-            MidiMonitorLabel.AutoSize = true;
-            MidiMonitorLabel.Location = new Point(18, 21);
-            MidiMonitorLabel.Name = "MidiMonitorLabel";
-            MidiMonitorLabel.Size = new Size(81, 15);
-            MidiMonitorLabel.TabIndex = 27;
-            MidiMonitorLabel.Text = "Monitor MIDI:";
-            // 
-            // MidiMonitorClearButton
-            // 
-            MidiMonitorClearButton.Enabled = false;
-            MidiMonitorClearButton.Location = new Point(94, 18);
-            MidiMonitorClearButton.Name = "MidiMonitorClearButton";
-            MidiMonitorClearButton.Size = new Size(62, 21);
-            MidiMonitorClearButton.TabIndex = 3;
-            MidiMonitorClearButton.Text = "Limpar";
-            MidiMonitorClearButton.UseVisualStyleBackColor = true;
-            MidiMonitorClearButton.Click += MidiMonitorClearButton_Click;
+            HiHatProgressBarLabel.Text = "HHC:";
             // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(MidiMonitorListBox);
-            groupBox4.Controls.Add(MidiMonitorClearButton);
-            groupBox4.Controls.Add(MidiMonitorLabel);
+            groupBox4.Controls.Add(MidiMonitorTextBox);
+            groupBox4.Controls.Add(label1);
+            groupBox4.Controls.Add(HHCVerticalProgressBar);
             groupBox4.Controls.Add(HiHatProgressBarLabel);
-            groupBox4.Controls.Add(HHCProgressBar);
-            groupBox4.Location = new Point(9, 408);
+            groupBox4.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            groupBox4.Location = new Point(9, 12);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(692, 179);
+            groupBox4.Size = new Size(256, 574);
             groupBox4.TabIndex = 60;
             groupBox4.TabStop = false;
             groupBox4.Text = "Monitor";
             // 
-            // MidiMonitorListBox
+            // MidiMonitorTextBox
             // 
-            MidiMonitorListBox.FormattingEnabled = true;
-            MidiMonitorListBox.ItemHeight = 15;
-            MidiMonitorListBox.Location = new Point(18, 39);
-            MidiMonitorListBox.Name = "MidiMonitorListBox";
-            MidiMonitorListBox.Size = new Size(405, 124);
-            MidiMonitorListBox.TabIndex = 34;
+            MidiMonitorTextBox.Enabled = false;
+            MidiMonitorTextBox.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            MidiMonitorTextBox.Location = new Point(6, 41);
+            MidiMonitorTextBox.Name = "MidiMonitorTextBox";
+            MidiMonitorTextBox.ScrollBars = RichTextBoxScrollBars.None;
+            MidiMonitorTextBox.Size = new Size(218, 523);
+            MidiMonitorTextBox.TabIndex = 37;
+            MidiMonitorTextBox.Text = "";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(68, 15);
+            label1.Name = "label1";
+            label1.Size = new Size(94, 13);
+            label1.TabIndex = 36;
+            label1.Text = "Mensagens MIDI:";
+            // 
+            // HHCVerticalProgressBar
+            // 
+            HHCVerticalProgressBar.Location = new Point(230, 39);
+            HHCVerticalProgressBar.Name = "HHCVerticalProgressBar";
+            HHCVerticalProgressBar.Size = new Size(19, 525);
+            HHCVerticalProgressBar.TabIndex = 35;
+            // 
+            // MidiNoteComboBox
+            // 
+            MidiNoteComboBox.Enabled = false;
+            MidiNoteComboBox.FormattingEnabled = true;
+            MidiNoteComboBox.ItemHeight = 15;
+            MidiNoteComboBox.Location = new Point(82, 142);
+            MidiNoteComboBox.Name = "MidiNoteComboBox";
+            MidiNoteComboBox.Size = new Size(172, 23);
+            MidiNoteComboBox.TabIndex = 49;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1036, 598);
+            ClientSize = new Size(1195, 598);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
@@ -668,7 +639,6 @@
             Text = "DyDrums";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)ScanTimeTrackBar).EndInit();
-            ((System.ComponentModel.ISupportInitialize)MidiNoteNumericUpDown).EndInit();
             ((System.ComponentModel.ISupportInitialize)ThresholdTrackbar).EndInit();
             ((System.ComponentModel.ISupportInitialize)MaskTimeTrackBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)RetriggerTrackBar).EndInit();
@@ -689,7 +659,6 @@
         private TrackBar ScanTimeTrackBar;
         private TextBox PadNameTextBox;
         private Label PadNameLabel;
-        private NumericUpDown MidiNoteNumericUpDown;
         private Label MidiNoteLabel;
         private TrackBar ThresholdTrackbar;
         private Label ThresholdTrackBarLabel;
@@ -716,6 +685,18 @@
         private Label CurveTrackBarLabel;
         private GroupBox groupBox3;
         public DataGridView PadsTable;
+        private ComboBox MidiDevicesComboBox;
+        private Label MidiDeviceLabel;
+        private CheckBox ConnectCheckBox;
+        private ComboBox COMPortsComboBox;
+        private Label COMPortLabel;
+        private Button MidiDevicesScanButton;
+        private GroupBox groupBox2;
+        private Label HiHatProgressBarLabel;
+        private GroupBox groupBox4;
+        private Button COMPortsScanButton;
+        private Services.VerticalProgressBar HHCVerticalProgressBar;
+        private Label label1;
         private DataGridViewTextBoxColumn PadName;
         private DataGridViewTextBoxColumn Note;
         private DataGridViewTextBoxColumn Threshold;
@@ -724,20 +705,7 @@
         private DataGridViewTextBoxColumn Retrigger;
         private DataGridViewTextBoxColumn Curve;
         private DataGridViewTextBoxColumn CurveForm;
-        private DataGridViewTextBoxColumn Gain;
-        private ComboBox MidiDevicesComboBox;
-        private Label MidiDeviceLabel;
-        private CheckBox ConnectCheckBox;
-        private ComboBox COMPortsComboBox;
-        private Label COMPortLabel;
-        private Button MidiDevicesScanButton;
-        private GroupBox groupBox2;
-        private ProgressBar HHCProgressBar;
-        private Label HiHatProgressBarLabel;
-        private Label MidiMonitorLabel;
-        private Button MidiMonitorClearButton;
-        private GroupBox groupBox4;
-        private Button COMPortsScanButton;
-        private ListBox MidiMonitorListBox;
+        private RichTextBox MidiMonitorTextBox;
+        private ComboBox MidiNoteComboBox;
     }
 }

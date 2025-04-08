@@ -19,10 +19,7 @@ namespace DyDrums.Serial
         private static List<byte> currentSysex = new();
         private static List<byte[]> fullSysexMessages = new();
         private static PadManager padManager = new PadManager();
-        private readonly MainForm? mainForm;
 
-
-        public event EventHandler<byte[]>? DataReceived;
 
         public bool IsConnected => serialPort != null && serialPort.IsOpen;
 

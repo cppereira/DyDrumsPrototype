@@ -17,7 +17,7 @@ namespace DyDrums.Services
         private readonly List<PadConfig> padConfigs = new();
         private static List<byte[]> receivedMessages = new();
         private readonly ConfigManager configManager = new ConfigManager();
-        private PadManager padManager;
+        private PadManager? padManager;
 
         public void LoadConfigs(List<PadConfig> configs)
         {            
@@ -41,10 +41,7 @@ namespace DyDrums.Services
         public void ProcessSysex(List<byte[]> messages, DataGridView grid)
         {
             receivedMessages.AddRange(messages);
-
-            const int totalPads = 15;
-            const int expectedMessages = totalPads * 8;
-
+            
             // Verifica se a última mensagem indica o fim da transmissão
             if (alreadyProcessed || !receivedMessages.Any(m => IsEndMessage(m)))
             {
