@@ -7,6 +7,7 @@ using DyDrums.Models;
 using NAudio.Midi;
 using System.Diagnostics;
 using System.Text.Json;
+using static DyDrums.UI.MainForm;
 
 namespace DyDrums.UI
 {
@@ -48,6 +49,7 @@ namespace DyDrums.UI
             var pads = configManager.LoadFromFile();
             //MessageBox.Show($"[DEBUG] {pads.Count} pads carregados do JSON.");
             padManager.LoadConfigs(pads);
+            PadsTable.CellDoubleClick += PadsTable_CellDoubleClick;
 
         }
 
@@ -127,16 +129,6 @@ namespace DyDrums.UI
                     MidiDevicesScanButton.Enabled = false;
                     MidiMonitorTextBox.Enabled = true;
                     PadConfigDownloadButton.Enabled = true;
-                    PadConfigUploadButton.Enabled = true;
-                    PadNameTextBox.Enabled = true;
-                    MidiNoteComboBox.Enabled = true;
-                    ThresholdTrackbar.Enabled = true;
-                    ScanTimeTrackBar.Enabled = true;
-                    MaskTimeTrackBar.Enabled = true;
-                    RetriggerTrackBar.Enabled = true;
-                    CurveComboBox.Enabled = true;
-                    CurveFormTrackBar.Enabled = true;
-                    GainTrackBar.Enabled = true;
                     HHCVerticalProgressBar.Enabled = true;
                     PadsTable.Enabled = true;
                 }
@@ -152,16 +144,6 @@ namespace DyDrums.UI
                     MidiDevicesScanButton.Enabled = true;
                     MidiMonitorTextBox.Enabled = false;
                     PadConfigDownloadButton.Enabled = false;
-                    PadConfigUploadButton.Enabled = false;
-                    PadNameTextBox.Enabled = false;
-                    MidiNoteComboBox.Enabled = false;
-                    ThresholdTrackbar.Enabled = false;
-                    ScanTimeTrackBar.Enabled = false;
-                    MaskTimeTrackBar.Enabled = false;
-                    RetriggerTrackBar.Enabled = false;
-                    CurveComboBox.Enabled = false;
-                    CurveFormTrackBar.Enabled = false;
-                    GainTrackBar.Enabled = false;
                     HHCVerticalProgressBar.Enabled = false;
                     HHCVerticalProgressBar.Value = 0;
                     MidiMonitorTextBox.Clear();
@@ -258,6 +240,28 @@ namespace DyDrums.UI
                     HHCVerticalProgressBar.Value = Math.Min(velocity, HHCVerticalProgressBar.Maximum);
                 }
             });
+        }
+
+
+        private void PadsTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Pra garantir que não clicou no cabeçalho
+            {
+                var row = PadsTable.Rows[e.RowIndex];
+
+                // Você precisa extrair o PadConfig correspondente a essa linha
+                // Idealmente, você teria um mapeamento direto via índice ou algo parecido
+                var pad = padManager.GetPadByIndex(e.RowIndex); // ← implementa isso aí se não tiver ainda
+
+                var editorForm = new PadEditorForm(pad); // <- Passa o pad atual pro modal
+
+                if (editorForm.ShowDialog() == DialogResult.OK)
+                {
+                    // O usuário editou e salvou, então atualiza a tabela
+                    RefreshPadsTable();
+                    configManager.SaveToFile(padManager.GetAllConfigs());
+                }
+            }
         }
 
     }

@@ -88,6 +88,15 @@ namespace DyDrums.Services
         {
             return message.Length >= 6 && message[1] == 0x77 && message[2] == 0x02 &&
                    message[3] == 0x7F && message[4] == 0x7F && message[5] == 0x7F;
-        }        
+        }
+
+        public PadConfig? GetPadByIndex(int index)
+        {
+            if (index >= 0 && index < padConfigs.Count)
+                return padConfigs[index];
+
+            return null; // Se você for do tipo cauteloso
+        }
+
     }
 }

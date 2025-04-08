@@ -10,17 +10,18 @@
         {
         public int Pin { get; set; }
         public string Name { get; set; } = "";
+
+        public int Type { get; set; } // Novo
         public int Note { get; set; }
         public int Threshold { get; set; }
         public int ScanTime { get; set; }
         public int MaskTime { get; set; }
         public int Retrigger { get; set; }
         public int Curve { get; set; }
-        public int CurveForm { get; set; }
-        public int Gain { get; set; }
+        public int CurveForm { get; set; }        
         public int Xtalk { get; set; } // Novo
         public int XtalkGroup { get; set; } // Novo
-        public int Type { get; set; } // Novo
+        public int Gain { get; set; }
         public int Channel { get; set; } // Novo
 
         public override string ToString()
