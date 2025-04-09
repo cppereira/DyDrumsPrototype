@@ -1,6 +1,6 @@
 #Dydrum - Software de configuração da bateria eletrônica caseira feita com Arduino.
 
-Projeto original de 2014, criado por: https://github.com/massimobernava/
+Projeto original de 2014, criado por: https://github.com/massimobernava
 
 O Firmware ainda é o mesmo do original, disponível em: https://github.com/massimobernava/md-firmware
 
