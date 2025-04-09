@@ -1,4 +1,4 @@
-#Dydrum - Software de configuração da bateria eletrônica caseira feita com Arduino.
+#Dydrum ConfigTool - Software de configuração da bateria eletrônica caseira feita com Arduino.
 
 Projeto original de 2014, criado por: https://github.com/massimobernava
 
