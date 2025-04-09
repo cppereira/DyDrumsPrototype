@@ -41,7 +41,7 @@ namespace DyDrums.UI
             ConnectCheckBox.Size = new Size(100, 40);
 
             PadsTable.CellEndEdit += PadsTable_CellEndEdit;
-            PadsTable.CellValueChanged += PadsTable_CellValueChanged;
+            //PadsTable.CellValueChanged += PadsTable_CellValueChanged;
 
 
             midiManager.MidiMessageReceived += OnMidiMessageReceived;
@@ -283,85 +283,125 @@ namespace DyDrums.UI
 
         private void PadsTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var pad = allPads[e.RowIndex];
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
-            var column = PadsTable.Columns[e.ColumnIndex].Name;
-            var cellValue = PadsTable[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+            var pad = allPads[e.RowIndex];
+            var columnName = PadsTable.Columns[e.ColumnIndex].Name;
+            var cell = PadsTable.Rows[e.RowIndex].Cells[e.ColumnIndex];
+            var newValue = cell.Value?.ToString()?.Trim();
 
             try
             {
-                switch (column)
+                bool changed = false;
+
+                switch (columnName)
                 {
-                    case "Name":
-                        pad.Name = cellValue;
-                        break;
-                    case "Note":
-                        if (int.TryParse(cellValue, out var note)) pad.Note = note;
-                        break;
                     case "Type":
-                        if (int.TryParse(cellValue, out var type)) pad.Type = type;
+                        if (int.TryParse(newValue, out var type) && pad.Type != type)
+                        {
+                            pad.Type = type;
+                            changed = true;
+                        }
+                        break;
+
+                    case "PadName":
+                        if (pad.Name != newValue)
+                        {
+                            pad.Name = newValue ?? "";
+                            changed = true;
+                        }
+                        break;
+
+                    case "Note":
+                        if (int.TryParse(newValue, out var note) && pad.Note != note)
+                        {
+                            pad.Note = note;
+                            changed = true;
+                        }
+                        break;
+                    case "Threshold":
+                        if (int.TryParse(newValue, out var threshold) && pad.Threshold != threshold)
+                        {
+                            pad.Threshold = threshold;
+                            changed = true;
+                        }
+                        break;
+                    case "ScanTime":
+                        if (int.TryParse(newValue, out var scanTime) && pad.ScanTime != scanTime)
+                        {
+                            pad.Threshold = scanTime;
+                            changed = true;
+                        }
+                        break;
+                    case "MaskTime":
+                        if (int.TryParse(newValue, out var maskTime) && pad.MaskTime != maskTime)
+                        {
+                            pad.MaskTime = maskTime;
+                            changed = true;
+                        }
+                        break;
+                    case "Retrigger":
+                        if (int.TryParse(newValue, out var retrigger) && pad.Retrigger != retrigger)
+                        {
+                            pad.Retrigger = retrigger;
+                            changed = true;
+                        }
+                        break;
+                    case "Curve":
+                        if (int.TryParse(newValue, out var curve) && pad.Curve != curve)
+                        {
+                            pad.Curve = curve;
+                            changed = true;
+                        }
+                        break;
+                    case "CurveForm":
+                        if (int.TryParse(newValue, out var curveForm) && pad.CurveForm != curveForm)
+                        {
+                            pad.CurveForm = curveForm;
+                            changed = true;
+                        }
+                        break;
+                    case "XTalk":
+                        if (int.TryParse(newValue, out var xtalk) && pad.Xtalk != xtalk)
+                        {
+                            pad.Xtalk = xtalk;
+                            changed = true;
+                        }
+                        break;
+                    case "XtalkGroup":
+                        if (int.TryParse(newValue, out var xtalkGroup) && pad.XtalkGroup != xtalkGroup)
+                        {
+                            pad.XtalkGroup = xtalkGroup;
+                            changed = true;
+                        }
                         break;
                     case "Channel":
-                        if (int.TryParse(cellValue, out var channel)) pad.Channel = channel;
+                        if (int.TryParse(newValue, out var channel) && pad.Channel != channel)
+                        {
+                            pad.Channel = channel;
+                            changed = true;
+                        }
                         break;
-                        // Adicione os que quiser
+                    case "Gain":
+                        if (int.TryParse(newValue, out var gain) && pad.Gain != gain)
+                        {
+                            pad.Gain = gain;
+                            changed = true;
+                        }
+                        break;
                 }
 
-                configManager.SaveToFile(allPads);
-                PadsTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightGreen;
-                eepromService.SendPadToEEPROM(pad);
+                if (changed)
+                {
+                    configManager.SaveToFile(allPads);
+                    eepromService.SendPadToEEPROM(pad);
+                    cell.Style.BackColor = Color.LightGreen;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao editar célula: " + ex.Message);
             }
         }
-
-        private void PadsTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            var grid = (DataGridView)sender;
-
-            var currentValue = grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
-            var originalValue = GetOriginalValueFromPad(e.RowIndex, e.ColumnIndex);
-
-            if (currentValue != originalValue)
-            {
-                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
-            }
-        }
-
-        private string? GetOriginalValueFromPad(int rowIndex, int columnIndex)
-        {
-            if (rowIndex >= originalConfigs.Count) return null;
-
-            var original = originalConfigs[rowIndex];
-            return columnIndex switch
-            {
-                0 => original.Pin.ToString(),
-                1 => original.Name,
-                2 => original.Type.ToString(),
-                3 => original.Note.ToString(),
-                4 => original.Threshold.ToString(),
-                5 => original.ScanTime.ToString(),
-                6 => original.MaskTime.ToString(),
-                7 => original.Retrigger.ToString(),
-                8 => original.Curve.ToString(),
-                9 => original.CurveForm.ToString(),
-                10 => original.Gain.ToString(),
-                11 => original.Xtalk.ToString(),
-                12 => original.XtalkGroup.ToString(),
-                13 => original.Channel.ToString(),
-                _ => null
-            };
-        }
-
-
-
     }
 }
