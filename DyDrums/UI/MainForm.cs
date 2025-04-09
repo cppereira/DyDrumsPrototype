@@ -188,6 +188,7 @@ namespace DyDrums.UI
             {
                 if (string.IsNullOrWhiteSpace(config.Name)) continue;
                 PadsTable.Rows.Add(
+                    config.Type,
                     config.Name,
                     config.Note,
                     config.Threshold,
@@ -195,12 +196,11 @@ namespace DyDrums.UI
                     config.MaskTime,
                     config.Retrigger,
                     config.Curve,
-                    config.CurveForm,
-                    config.Gain,
+                    config.CurveForm,                    
                     config.Xtalk,
-                    config.XtalkGroup,
-                    config.Type,
-                    config.Channel
+                    config.XtalkGroup,                    
+                    config.Channel,
+                    config.Gain
                 );
             }
         }
@@ -252,5 +252,9 @@ namespace DyDrums.UI
             }
         }
 
+        private void MidiMonitorClearButton_Click(object sender, EventArgs e)
+        {
+            MidiMonitorTextBox?.Clear();
+        }
     }
 }

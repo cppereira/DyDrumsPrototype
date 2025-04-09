@@ -30,18 +30,10 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             imageList1 = new ImageList(components);
             groupBox3 = new GroupBox();
             PadsTable = new DataGridView();
-            PadName = new DataGridViewTextBoxColumn();
-            Note = new DataGridViewTextBoxColumn();
-            Threshold = new DataGridViewTextBoxColumn();
-            ScanTime = new DataGridViewTextBoxColumn();
-            MaskTime = new DataGridViewTextBoxColumn();
-            Retrigger = new DataGridViewTextBoxColumn();
-            Curve = new DataGridViewTextBoxColumn();
-            CurveForm = new DataGridViewTextBoxColumn();
             MidiDevicesComboBox = new ComboBox();
             MidiDeviceLabel = new Label();
             ConnectCheckBox = new CheckBox();
@@ -52,10 +44,24 @@
             COMPortsScanButton = new Button();
             HiHatProgressBarLabel = new Label();
             groupBox4 = new GroupBox();
+            MidiMonitorClearButton = new Button();
             MidiMonitorTextBox = new RichTextBox();
             label1 = new Label();
             HHCVerticalProgressBar = new DyDrums.Services.VerticalProgressBar();
             PadConfigDownloadButton = new Button();
+            Type = new DataGridViewTextBoxColumn();
+            PadName = new DataGridViewTextBoxColumn();
+            Note = new DataGridViewTextBoxColumn();
+            Threshold = new DataGridViewTextBoxColumn();
+            ScanTime = new DataGridViewTextBoxColumn();
+            MaskTime = new DataGridViewTextBoxColumn();
+            Retrigger = new DataGridViewTextBoxColumn();
+            Curve = new DataGridViewTextBoxColumn();
+            CurveForm = new DataGridViewTextBoxColumn();
+            XTalk = new DataGridViewTextBoxColumn();
+            XTalkGroup = new DataGridViewTextBoxColumn();
+            Channel = new DataGridViewTextBoxColumn();
+            Gain = new DataGridViewTextBoxColumn();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PadsTable).BeginInit();
             groupBox2.SuspendLayout();
@@ -74,7 +80,7 @@
             groupBox3.Controls.Add(PadsTable);
             groupBox3.Location = new Point(353, 135);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(644, 509);
+            groupBox3.Size = new Size(994, 509);
             groupBox3.TabIndex = 59;
             groupBox3.TabStop = false;
             groupBox3.Text = "Pads";
@@ -83,16 +89,16 @@
             // 
             PadsTable.AllowUserToOrderColumns = true;
             PadsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PadsTable.Columns.AddRange(new DataGridViewColumn[] { PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm });
+            PadsTable.Columns.AddRange(new DataGridViewColumn[] { Type, PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm, XTalk, XTalkGroup, Channel, Gain });
             PadsTable.Cursor = Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            PadsTable.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            PadsTable.DefaultCellStyle = dataGridViewCellStyle4;
             PadsTable.Enabled = false;
             PadsTable.Location = new Point(17, 34);
             PadsTable.MultiSelect = false;
@@ -100,92 +106,30 @@
             PadsTable.RowTemplate.Resizable = DataGridViewTriState.False;
             PadsTable.ScrollBars = ScrollBars.Vertical;
             PadsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            PadsTable.Size = new Size(610, 425);
+            PadsTable.Size = new Size(957, 425);
             PadsTable.TabIndex = 29;
-            // 
-            // PadName
-            // 
-            PadName.HeaderText = "Nome";
-            PadName.Name = "PadName";
-            PadName.Resizable = DataGridViewTriState.False;
-            PadName.SortMode = DataGridViewColumnSortMode.NotSortable;
-            PadName.Width = 80;
-            // 
-            // Note
-            // 
-            Note.HeaderText = "Nota";
-            Note.Name = "Note";
-            Note.Resizable = DataGridViewTriState.False;
-            Note.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Note.Width = 50;
-            // 
-            // Threshold
-            // 
-            Threshold.HeaderText = "Threshold";
-            Threshold.Name = "Threshold";
-            Threshold.Resizable = DataGridViewTriState.False;
-            Threshold.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Threshold.Width = 70;
-            // 
-            // ScanTime
-            // 
-            ScanTime.HeaderText = "ScanTime";
-            ScanTime.Name = "ScanTime";
-            ScanTime.Resizable = DataGridViewTriState.False;
-            ScanTime.SortMode = DataGridViewColumnSortMode.NotSortable;
-            ScanTime.Width = 70;
-            // 
-            // MaskTime
-            // 
-            MaskTime.HeaderText = "MaskTime";
-            MaskTime.Name = "MaskTime";
-            MaskTime.Resizable = DataGridViewTriState.False;
-            MaskTime.SortMode = DataGridViewColumnSortMode.NotSortable;
-            MaskTime.Width = 70;
-            // 
-            // Retrigger
-            // 
-            Retrigger.HeaderText = "Retrigger";
-            Retrigger.Name = "Retrigger";
-            Retrigger.Resizable = DataGridViewTriState.False;
-            Retrigger.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Retrigger.Width = 70;
-            // 
-            // Curve
-            // 
-            Curve.HeaderText = "Curve";
-            Curve.Name = "Curve";
-            Curve.Width = 80;
-            // 
-            // CurveForm
-            // 
-            CurveForm.HeaderText = "CurveForm";
-            CurveForm.Name = "CurveForm";
-            CurveForm.Resizable = DataGridViewTriState.False;
-            CurveForm.SortMode = DataGridViewColumnSortMode.NotSortable;
-            CurveForm.Width = 80;
             // 
             // MidiDevicesComboBox
             // 
             MidiDevicesComboBox.FormattingEnabled = true;
-            MidiDevicesComboBox.Location = new Point(362, 23);
+            MidiDevicesComboBox.Location = new Point(562, 23);
             MidiDevicesComboBox.Name = "MidiDevicesComboBox";
-            MidiDevicesComboBox.Size = new Size(125, 23);
+            MidiDevicesComboBox.Size = new Size(175, 23);
             MidiDevicesComboBox.TabIndex = 31;
             // 
             // MidiDeviceLabel
             // 
             MidiDeviceLabel.AutoSize = true;
-            MidiDeviceLabel.Location = new Point(260, 26);
+            MidiDeviceLabel.Location = new Point(460, 27);
             MidiDeviceLabel.Name = "MidiDeviceLabel";
-            MidiDeviceLabel.Size = new Size(96, 15);
+            MidiDeviceLabel.Size = new Size(89, 15);
             MidiDeviceLabel.TabIndex = 30;
-            MidiDeviceLabel.Text = "Dispositivo MIDI:";
+            MidiDeviceLabel.Text = "Interfaces MIDI:";
             // 
             // ConnectCheckBox
             // 
             ConnectCheckBox.AutoSize = true;
-            ConnectCheckBox.Location = new Point(533, 27);
+            ConnectCheckBox.Location = new Point(893, 25);
             ConnectCheckBox.Name = "ConnectCheckBox";
             ConnectCheckBox.Size = new Size(81, 19);
             ConnectCheckBox.TabIndex = 48;
@@ -195,15 +139,15 @@
             // COMPortsComboBox
             // 
             COMPortsComboBox.FormattingEnabled = true;
-            COMPortsComboBox.Location = new Point(88, 24);
+            COMPortsComboBox.Location = new Point(198, 23);
             COMPortsComboBox.Name = "COMPortsComboBox";
-            COMPortsComboBox.Size = new Size(128, 23);
+            COMPortsComboBox.Size = new Size(170, 23);
             COMPortsComboBox.TabIndex = 5;
             // 
             // COMPortLabel
             // 
             COMPortLabel.AutoSize = true;
-            COMPortLabel.Location = new Point(8, 28);
+            COMPortLabel.Location = new Point(118, 27);
             COMPortLabel.Name = "COMPortLabel";
             COMPortLabel.Size = new Size(74, 15);
             COMPortLabel.TabIndex = 8;
@@ -216,7 +160,7 @@
             MidiDevicesScanButton.ImageAlign = ContentAlignment.MiddleRight;
             MidiDevicesScanButton.ImageIndex = 0;
             MidiDevicesScanButton.ImageList = imageList1;
-            MidiDevicesScanButton.Location = new Point(490, 21);
+            MidiDevicesScanButton.Location = new Point(741, 22);
             MidiDevicesScanButton.Margin = new Padding(0);
             MidiDevicesScanButton.Name = "MidiDevicesScanButton";
             MidiDevicesScanButton.Size = new Size(24, 24);
@@ -235,7 +179,7 @@
             groupBox2.Controls.Add(MidiDevicesComboBox);
             groupBox2.Location = new Point(353, 12);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(644, 65);
+            groupBox2.Size = new Size(994, 65);
             groupBox2.TabIndex = 58;
             groupBox2.TabStop = false;
             groupBox2.Text = "Conexão";
@@ -246,7 +190,7 @@
             COMPortsScanButton.ImageAlign = ContentAlignment.MiddleRight;
             COMPortsScanButton.ImageIndex = 0;
             COMPortsScanButton.ImageList = imageList1;
-            COMPortsScanButton.Location = new Point(219, 23);
+            COMPortsScanButton.Location = new Point(371, 22);
             COMPortsScanButton.Margin = new Padding(0);
             COMPortsScanButton.Name = "COMPortsScanButton";
             COMPortsScanButton.Size = new Size(24, 24);
@@ -266,6 +210,7 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(MidiMonitorClearButton);
             groupBox4.Controls.Add(MidiMonitorTextBox);
             groupBox4.Controls.Add(label1);
             groupBox4.Controls.Add(HHCVerticalProgressBar);
@@ -278,6 +223,16 @@
             groupBox4.TabStop = false;
             groupBox4.Text = "Monitor";
             // 
+            // MidiMonitorClearButton
+            // 
+            MidiMonitorClearButton.Location = new Point(55, 588);
+            MidiMonitorClearButton.Name = "MidiMonitorClearButton";
+            MidiMonitorClearButton.Size = new Size(172, 36);
+            MidiMonitorClearButton.TabIndex = 62;
+            MidiMonitorClearButton.Text = "Limpar Saída";
+            MidiMonitorClearButton.UseVisualStyleBackColor = true;
+            MidiMonitorClearButton.Click += MidiMonitorClearButton_Click;
+            // 
             // MidiMonitorTextBox
             // 
             MidiMonitorTextBox.Enabled = false;
@@ -285,7 +240,7 @@
             MidiMonitorTextBox.Location = new Point(6, 41);
             MidiMonitorTextBox.Name = "MidiMonitorTextBox";
             MidiMonitorTextBox.ScrollBars = RichTextBoxScrollBars.None;
-            MidiMonitorTextBox.Size = new Size(264, 585);
+            MidiMonitorTextBox.Size = new Size(264, 541);
             MidiMonitorTextBox.TabIndex = 37;
             MidiMonitorTextBox.Text = "";
             // 
@@ -303,13 +258,13 @@
             // 
             HHCVerticalProgressBar.Location = new Point(294, 41);
             HHCVerticalProgressBar.Name = "HHCVerticalProgressBar";
-            HHCVerticalProgressBar.Size = new Size(19, 585);
+            HHCVerticalProgressBar.Size = new Size(19, 541);
             HHCVerticalProgressBar.TabIndex = 35;
             // 
             // PadConfigDownloadButton
             // 
             PadConfigDownloadButton.Enabled = false;
-            PadConfigDownloadButton.Location = new Point(353, 86);
+            PadConfigDownloadButton.Location = new Point(353, 89);
             PadConfigDownloadButton.Name = "PadConfigDownloadButton";
             PadConfigDownloadButton.Size = new Size(172, 36);
             PadConfigDownloadButton.TabIndex = 61;
@@ -317,12 +272,104 @@
             PadConfigDownloadButton.UseVisualStyleBackColor = true;
             PadConfigDownloadButton.Click += PadConfigDownloadButton_Click;
             // 
+            // Type
+            // 
+            Type.HeaderText = "Tipo";
+            Type.Name = "Type";
+            Type.Width = 60;
+            // 
+            // PadName
+            // 
+            PadName.HeaderText = "Pad";
+            PadName.Name = "PadName";
+            PadName.Resizable = DataGridViewTriState.False;
+            PadName.SortMode = DataGridViewColumnSortMode.NotSortable;
+            PadName.Width = 80;
+            // 
+            // Note
+            // 
+            Note.HeaderText = "Nota";
+            Note.Name = "Note";
+            Note.Resizable = DataGridViewTriState.False;
+            Note.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Note.Width = 50;
+            // 
+            // Threshold
+            // 
+            Threshold.HeaderText = "Sensi";
+            Threshold.Name = "Threshold";
+            Threshold.Resizable = DataGridViewTriState.False;
+            Threshold.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Threshold.Width = 70;
+            // 
+            // ScanTime
+            // 
+            ScanTime.HeaderText = "Leitura";
+            ScanTime.Name = "ScanTime";
+            ScanTime.Resizable = DataGridViewTriState.False;
+            ScanTime.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ScanTime.Width = 70;
+            // 
+            // MaskTime
+            // 
+            MaskTime.HeaderText = "Bloqueio";
+            MaskTime.Name = "MaskTime";
+            MaskTime.Resizable = DataGridViewTriState.False;
+            MaskTime.SortMode = DataGridViewColumnSortMode.NotSortable;
+            MaskTime.Width = 70;
+            // 
+            // Retrigger
+            // 
+            Retrigger.HeaderText = "Repetição";
+            Retrigger.Name = "Retrigger";
+            Retrigger.Resizable = DataGridViewTriState.False;
+            Retrigger.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Retrigger.Width = 70;
+            // 
+            // Curve
+            // 
+            Curve.HeaderText = "Curva";
+            Curve.Name = "Curve";
+            Curve.Width = 80;
+            // 
+            // CurveForm
+            // 
+            CurveForm.HeaderText = "Forma";
+            CurveForm.Name = "CurveForm";
+            CurveForm.Resizable = DataGridViewTriState.False;
+            CurveForm.SortMode = DataGridViewColumnSortMode.NotSortable;
+            CurveForm.Width = 60;
+            // 
+            // XTalk
+            // 
+            XTalk.HeaderText = "Isolamento";
+            XTalk.Name = "XTalk";
+            XTalk.Width = 80;
+            // 
+            // XTalkGroup
+            // 
+            XTalkGroup.HeaderText = "Grupo";
+            XTalkGroup.Name = "XTalkGroup";
+            XTalkGroup.Width = 80;
+            // 
+            // Channel
+            // 
+            Channel.HeaderText = "Canal";
+            Channel.Name = "Channel";
+            Channel.Width = 80;
+            // 
+            // Gain
+            // 
+            Gain.HeaderText = "Ganho";
+            Gain.Name = "Gain";
+            Gain.Width = 80;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = MidiDevicesScanButton;
-            ClientSize = new Size(1009, 654);
+            ClientSize = new Size(1359, 654);
             Controls.Add(PadConfigDownloadButton);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
@@ -331,6 +378,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "DyDrums";
             Load += MainForm_Load;
             groupBox3.ResumeLayout(false);
@@ -360,6 +408,8 @@
         private Label label1;
         private RichTextBox MidiMonitorTextBox;
         private Button PadConfigDownloadButton;
+        private Button MidiMonitorClearButton;
+        private DataGridViewTextBoxColumn Type;
         private DataGridViewTextBoxColumn PadName;
         private DataGridViewTextBoxColumn Note;
         private DataGridViewTextBoxColumn Threshold;
@@ -368,5 +418,9 @@
         private DataGridViewTextBoxColumn Retrigger;
         private DataGridViewTextBoxColumn Curve;
         private DataGridViewTextBoxColumn CurveForm;
+        private DataGridViewTextBoxColumn XTalk;
+        private DataGridViewTextBoxColumn XTalkGroup;
+        private DataGridViewTextBoxColumn Channel;
+        private DataGridViewTextBoxColumn Gain;
     }
 }

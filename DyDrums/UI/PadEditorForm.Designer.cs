@@ -451,6 +451,7 @@
             Controls.Add(groupBox1);
             Controls.Add(PadEditorSaveButton);
             Name = "PadEditorForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Editar Pad";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();

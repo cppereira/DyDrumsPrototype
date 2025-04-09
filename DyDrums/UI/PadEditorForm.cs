@@ -98,7 +98,7 @@ namespace DyDrums.UI
 
             //Preenche o valor correto de ScanTime
             PadEditorScanTimeTrackBar.Value = originalPad.ScanTime;
-            PadEditorScanTimeTextBox.Text = originalPad.Threshold.ToString();
+            PadEditorScanTimeTextBox.Text = originalPad.ScanTime.ToString();
 
             //Preenche o valor correto de MaskTime
             PadEditorMaskTimeTrackBar.Value = originalPad.MaskTime;
@@ -181,22 +181,28 @@ namespace DyDrums.UI
             PadEditorPadNameTextBox.Text = pad.Name;
 
             PadEditorSensorTypeComboBox.SelectedValue = pad.Type;
-
             PadEditorMidiNoteComboBox.SelectedValue = pad.Note;
+
+            PadEditorThresholdTrackBar.Value = pad.Threshold;
+            PadEditorScanTimeTrackBar.Value = pad.ScanTime;
+            PadEditorMaskTimeTrackBar.Value = pad.MaskTime;
+            PadEditorRetriggerTrackBar.Value = pad.Retrigger;
+            PadEditorCurveFormTrackBar.Value = pad.CurveForm;
+            PadEditorGainTrackBar.Value = pad.Gain;
+            PadEditorXTalkTrackBar.Value = pad.Xtalk;
 
             PadEditorThresholdTextBox.Text = pad.Threshold.ToString();
             PadEditorScanTimeTextBox.Text = pad.ScanTime.ToString();
             PadEditorMaskTimeTextBox.Text = pad.MaskTime.ToString();
             PadEditorRetriggerTextBox.Text = pad.Retrigger.ToString();
-
-            PadEditorCurveComboBox.SelectedValue = pad.Curve;
-
             PadEditorCurveFormTextBox.Text = pad.CurveForm.ToString();
             PadEditorGainTextBox.Text = pad.Gain.ToString();
             PadEditorXTalkTextBox.Text = pad.Xtalk.ToString();
 
+            PadEditorCurveComboBox.SelectedValue = pad.Curve;
             PadEditorXTalkGroupNumericUpDown.Value = pad.XtalkGroup;
             PadEditorChannelNumericUpDown.Value = pad.Channel;
+
             preenchendoCampos = false;
         }
 
