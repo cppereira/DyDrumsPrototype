@@ -38,6 +38,12 @@ namespace DyDrums.UI
 
         private void MainForm_Load(object? sender, EventArgs? e)
         {
+            ConnectCheckBox.Appearance = Appearance.Button;
+            ConnectCheckBox.TextAlign = ContentAlignment.MiddleCenter;
+            ConnectCheckBox.FlatStyle = FlatStyle.Standard;
+            ConnectCheckBox.Size = new Size(100, 40);
+
+
             midiManager.MidiMessageReceived += OnMidiMessageReceived;
             serialManager.MidiMessageReceived += OnMidiMessageReceived;
             //Chama o método que atualiza a lista de portas COM disponíveis
@@ -106,10 +112,12 @@ namespace DyDrums.UI
 
         private void ConnectCheckBox_CheckedChanged(object? sender, EventArgs? e)
         {
+            
             try
             {
                 if (ConnectCheckBox.Checked)
                 {
+                    ConnectCheckBox.Text = "Desconectar";
                     // Obter porta selecionada
                     string selectedPort = COMPortsComboBox.SelectedItem?.ToString() ?? "";
                     if (!string.IsNullOrEmpty(selectedPort))
@@ -133,9 +141,12 @@ namespace DyDrums.UI
                     PadConfigDownloadButton.Enabled = true;
                     HHCVerticalProgressBar.Enabled = true;
                     PadsTable.Enabled = true;
+                    PadsTableRefreshButton.Enabled = true;
+                    MidiMonitorClearButton.Enabled = true;
                 }
                 else
                 {
+                    ConnectCheckBox.Text = "Conectar";
                     serialManager.Disconnect();
                     midiManager.Disconnect();
 
@@ -150,6 +161,8 @@ namespace DyDrums.UI
                     HHCVerticalProgressBar.Value = 0;
                     MidiMonitorTextBox.Clear();
                     PadsTable.Enabled = false;
+                    PadsTableRefreshButton.Enabled = false;
+                    MidiMonitorClearButton.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -196,9 +209,9 @@ namespace DyDrums.UI
                     config.MaskTime,
                     config.Retrigger,
                     config.Curve,
-                    config.CurveForm,                    
+                    config.CurveForm,
                     config.Xtalk,
-                    config.XtalkGroup,                    
+                    config.XtalkGroup,
                     config.Channel,
                     config.Gain
                 );
@@ -255,6 +268,11 @@ namespace DyDrums.UI
         private void MidiMonitorClearButton_Click(object sender, EventArgs e)
         {
             MidiMonitorTextBox?.Clear();
+        }
+
+        private void PadsTableRefreshButton_Click(object sender, EventArgs e)
+        {
+            RefreshPadsTable();
         }
     }
 }
