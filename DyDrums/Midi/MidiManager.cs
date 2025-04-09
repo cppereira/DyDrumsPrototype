@@ -10,13 +10,21 @@ namespace DyDrums.Midi
 {
     public class MidiManager
     {
+
         public event Action<int, int, int>? MidiMessageReceived;        
         public void Initialize() { /* inicializa MIDI */ }
         public void SendNote(int note, int velocity) { /* envia nota */ }
 
         private MidiOut? midiOut;
 
-            public List<string> GetOutputDevices()
+        public static MidiManager Instance { get; internal set; }
+
+        public MidiManager()
+        {
+            Instance = this;
+        }
+
+        public List<string> GetOutputDevices()
             {
                 var devices = new List<string>();
                 for (int i = 0; i < MidiOut.NumberOfDevices; i++)
@@ -76,5 +84,15 @@ namespace DyDrums.Midi
                 // Chame o evento para notificar o MainForm (ou quem estiver inscrito)
                 MidiMessageReceived?.Invoke(status, data1, data2);
             }
+
+        public void SendControlChange(int channel, int controller, int value)
+        {
+            if (midiOut != null)
+            {
+                byte status = (byte)(0xB0 | (channel - 1)); // CC message
+                int midiMessage = status | (controller << 8) | (value << 16);
+                midiOut.Send(midiMessage);
+            }
+        }
     }
 }

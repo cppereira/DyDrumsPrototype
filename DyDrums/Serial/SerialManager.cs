@@ -112,7 +112,26 @@ namespace DyDrums.Serial
                             int channel = (b & 0x0F) + 1;
                             int data1 = serialPort.ReadByte();
                             int data2 = serialPort.ReadByte();
-                            MidiMessageReceived?.Invoke(channel, data1, data2);
+
+                            if (data1 == 4)
+                            {
+                                MidiManager.Instance.SendControlChange(channel, 4, data2);
+
+
+                                MainForm.Instance?.Invoke(() =>
+                                {
+                                    if (MainForm.Instance.HHCVerticalProgressBar != null)
+                                    {
+                                        int max = MainForm.Instance.HHCVerticalProgressBar.Maximum;
+                                        int invertedValue = max - data2;
+                                        MainForm.Instance.HHCVerticalProgressBar.Value = Math.Max(MainForm.Instance.HHCVerticalProgressBar.Minimum, invertedValue);
+                                    }
+                                });  ;
+                            }
+                            else
+                            {
+                                MidiMessageReceived?.Invoke(channel, data1, data2);
+                            }
                         }
                     }
                 }

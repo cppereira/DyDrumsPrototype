@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             imageList1 = new ImageList(components);
             groupBox3 = new GroupBox();
             PadsTable = new DataGridView();
@@ -85,22 +85,22 @@
             PadsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             PadsTable.Columns.AddRange(new DataGridViewColumn[] { PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm });
             PadsTable.Cursor = Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Window;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            PadsTable.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            PadsTable.DefaultCellStyle = dataGridViewCellStyle1;
             PadsTable.Enabled = false;
-            PadsTable.Location = new Point(21, 28);
+            PadsTable.Location = new Point(17, 34);
             PadsTable.MultiSelect = false;
             PadsTable.Name = "PadsTable";
             PadsTable.RowTemplate.Resizable = DataGridViewTriState.False;
             PadsTable.ScrollBars = ScrollBars.Vertical;
             PadsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            PadsTable.Size = new Size(610, 462);
+            PadsTable.Size = new Size(610, 425);
             PadsTable.TabIndex = 29;
             // 
             // PadName
@@ -109,7 +109,7 @@
             PadName.Name = "PadName";
             PadName.Resizable = DataGridViewTriState.False;
             PadName.SortMode = DataGridViewColumnSortMode.NotSortable;
-            PadName.Width = 70;
+            PadName.Width = 80;
             // 
             // Note
             // 
@@ -155,7 +155,7 @@
             // 
             Curve.HeaderText = "Curve";
             Curve.Name = "Curve";
-            Curve.Width = 70;
+            Curve.Width = 80;
             // 
             // CurveForm
             // 
@@ -321,12 +321,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = MidiDevicesScanButton;
             ClientSize = new Size(1009, 654);
             Controls.Add(PadConfigDownloadButton);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "MainForm";
             Text = "DyDrums";
             Load += MainForm_Load;
@@ -353,8 +356,10 @@
         private Label HiHatProgressBarLabel;
         private GroupBox groupBox4;
         private Button COMPortsScanButton;
-        private Services.VerticalProgressBar HHCVerticalProgressBar;
+        public Services.VerticalProgressBar HHCVerticalProgressBar;
         private Label label1;
+        private RichTextBox MidiMonitorTextBox;
+        private Button PadConfigDownloadButton;
         private DataGridViewTextBoxColumn PadName;
         private DataGridViewTextBoxColumn Note;
         private DataGridViewTextBoxColumn Threshold;
@@ -363,7 +368,5 @@
         private DataGridViewTextBoxColumn Retrigger;
         private DataGridViewTextBoxColumn Curve;
         private DataGridViewTextBoxColumn CurveForm;
-        private RichTextBox MidiMonitorTextBox;
-        private Button PadConfigDownloadButton;
     }
 }

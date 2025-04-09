@@ -63,6 +63,7 @@
             PadEditorRetriggerTrackBarLabel = new Label();
             PadEditorRetriggerTextBox = new TextBox();
             PadEditorSaveButton = new Button();
+            PadEditorCancelButton = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PadEditorChannelNumericUpDown).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PadEditorXTalkGroupNumericUpDown).BeginInit();
@@ -423,7 +424,7 @@
             // 
             // PadEditorSaveButton
             // 
-            PadEditorSaveButton.Location = new Point(12, 531);
+            PadEditorSaveButton.Location = new Point(569, 531);
             PadEditorSaveButton.Name = "PadEditorSaveButton";
             PadEditorSaveButton.Size = new Size(110, 36);
             PadEditorSaveButton.TabIndex = 47;
@@ -431,11 +432,22 @@
             PadEditorSaveButton.UseVisualStyleBackColor = true;
             PadEditorSaveButton.Click += PadEditorSaveButton_Click;
             // 
+            // PadEditorCancelButton
+            // 
+            PadEditorCancelButton.Location = new Point(12, 531);
+            PadEditorCancelButton.Name = "PadEditorCancelButton";
+            PadEditorCancelButton.Size = new Size(110, 36);
+            PadEditorCancelButton.TabIndex = 59;
+            PadEditorCancelButton.Text = "Cancelar";
+            PadEditorCancelButton.UseVisualStyleBackColor = true;
+            PadEditorCancelButton.Click += PadEditorCancelButton_Click;
+            // 
             // PadEditorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(691, 576);
+            Controls.Add(PadEditorCancelButton);
             Controls.Add(groupBox1);
             Controls.Add(PadEditorSaveButton);
             Name = "PadEditorForm";
@@ -491,5 +503,6 @@
         private NumericUpDown PadEditorXTalkGroupNumericUpDown;
         private NumericUpDown PadEditorChannelNumericUpDown;
         private Label PadEditChannelNumericUpDownLabel;
+        private Button PadEditorCancelButton;
     }
 }
