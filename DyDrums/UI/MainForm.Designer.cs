@@ -100,6 +100,7 @@
             // 
             // PadsTable
             // 
+            PadsTable.AllowUserToAddRows = false;
             PadsTable.AllowUserToOrderColumns = true;
             PadsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             PadsTable.Columns.AddRange(new DataGridViewColumn[] { Type, PadName, Note, Threshold, ScanTime, MaskTime, Retrigger, Curve, CurveForm, XTalk, XTalkGroup, Channel, Gain });
@@ -112,6 +113,7 @@
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
             PadsTable.DefaultCellStyle = dataGridViewCellStyle1;
+            PadsTable.EditMode = DataGridViewEditMode.EditOnEnter;
             PadsTable.Enabled = false;
             PadsTable.Location = new Point(17, 34);
             PadsTable.MultiSelect = false;

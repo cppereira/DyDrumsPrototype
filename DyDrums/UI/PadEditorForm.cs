@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
+﻿using System.Data;
 using DyDrums.Midi;
 using DyDrums.Models;
 using DyDrums.Services;
-using static DyDrums.UI.PadEditorForm;
 
 namespace DyDrums.UI
 {
@@ -294,9 +284,6 @@ namespace DyDrums.UI
             if (preenchendoCampos) return;
             PadEditorGainTrackBar.Value = Int32.Parse(PadEditorGainTextBox.Text);
         }
-
-
-
 
         private void PadEditorCancelButton_Click(object sender, EventArgs e)
         {

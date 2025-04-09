@@ -1,13 +1,9 @@
-﻿using System;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 using DyDrums.Midi;
+using DyDrums.Models;
 using DyDrums.Serial;
 using DyDrums.Services;
-using DyDrums.Models;
 using NAudio.Midi;
-using System.Diagnostics;
-using System.Text.Json;
-using static DyDrums.UI.MainForm;
 
 namespace DyDrums.UI
 {
@@ -22,10 +18,11 @@ namespace DyDrums.UI
         private readonly PadManager padManager = new PadManager();
         private readonly ConfigManager configManager = new();
         private static List<byte[]> receivedMessages = new();
-        private List<PadConfig> allPads;
+        private List<PadConfig>? allPads;
         private EEPROMService eepromService;
+        private List<PadConfig> originalConfigs = new();
 
-        public static MainForm Instance { get; private set; }
+        public static MainForm? Instance { get; private set; }
 
         public MainForm()
         {
@@ -43,6 +40,9 @@ namespace DyDrums.UI
             ConnectCheckBox.FlatStyle = FlatStyle.Standard;
             ConnectCheckBox.Size = new Size(100, 40);
 
+            PadsTable.CellEndEdit += PadsTable_CellEndEdit;
+            PadsTable.CellValueChanged += PadsTable_CellValueChanged;
+
 
             midiManager.MidiMessageReceived += OnMidiMessageReceived;
             serialManager.MidiMessageReceived += OnMidiMessageReceived;
@@ -53,7 +53,9 @@ namespace DyDrums.UI
             //Conecta o evento do checkbox
             ConnectCheckBox.CheckedChanged += ConnectCheckBox_CheckedChanged;
             var pads = configManager.LoadFromFile();
-            //MessageBox.Show($"[DEBUG] {pads.Count} pads carregados do JSON.");
+
+            originalConfigs = pads.Select(p => p.Clone()).ToList();
+
             padManager.LoadConfigs(pads);
             PadsTable.CellDoubleClick += PadsTable_CellDoubleClick;
             allPads = padManager.GetAllConfigs();
@@ -73,7 +75,7 @@ namespace DyDrums.UI
                 COMPortsComboBox.Items.Add(porta);
             }
 
-            // Selecionar a última porta COM disponível
+            // Selecionar a última porta COM disponível (normalmente onde já está o Arduino
             if (portas.Length > 0)
             {
                 COMPortsComboBox.SelectedItem = portas[^1]; // última porta
@@ -112,11 +114,17 @@ namespace DyDrums.UI
 
         private void ConnectCheckBox_CheckedChanged(object? sender, EventArgs? e)
         {
-            
+
             try
             {
                 if (ConnectCheckBox.Checked)
                 {
+                    //Garantir que a tabela seja carrega em uma possível reconexão
+                    var pads = configManager.LoadFromFile();
+                    padManager.LoadConfigs(pads);
+                    RefreshPadsTable();
+
+
                     ConnectCheckBox.Text = "Desconectar";
                     // Obter porta selecionada
                     string selectedPort = COMPortsComboBox.SelectedItem?.ToString() ?? "";
@@ -131,6 +139,7 @@ namespace DyDrums.UI
                         midiManager.Connect(selectedMidiDevice);
                     else
                         throw new Exception("Nenhum dispositivo MIDI selecionado.");
+
 
                     // Desabilita/Habilita combobox
                     COMPortsComboBox.Enabled = false;
@@ -179,13 +188,7 @@ namespace DyDrums.UI
             serialManager.Handshake();
         }
 
-        private void SaveConfig()
-        {
-            var currentConfigs = padManager.GetAllConfigs();
 
-            configManager.SaveToFile(currentConfigs);
-            MessageBox.Show("Configurações salvas com sucesso!", "Salvo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
         public void ReloadGridFromJson()
         {
             var pads = configManager.LoadFromFile();
@@ -272,7 +275,93 @@ namespace DyDrums.UI
 
         private void PadsTableRefreshButton_Click(object sender, EventArgs e)
         {
+            var pads = configManager.LoadFromFile();
+            padManager.LoadConfigs(pads);
             RefreshPadsTable();
         }
+
+
+        private void PadsTable_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var pad = allPads[e.RowIndex];
+
+            var column = PadsTable.Columns[e.ColumnIndex].Name;
+            var cellValue = PadsTable[e.ColumnIndex, e.RowIndex].Value?.ToString() ?? "";
+
+            try
+            {
+                switch (column)
+                {
+                    case "Name":
+                        pad.Name = cellValue;
+                        break;
+                    case "Note":
+                        if (int.TryParse(cellValue, out var note)) pad.Note = note;
+                        break;
+                    case "Type":
+                        if (int.TryParse(cellValue, out var type)) pad.Type = type;
+                        break;
+                    case "Channel":
+                        if (int.TryParse(cellValue, out var channel)) pad.Channel = channel;
+                        break;
+                        // Adicione os que quiser
+                }
+
+                configManager.SaveToFile(allPads);
+                PadsTable.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightGreen;
+                eepromService.SendPadToEEPROM(pad);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao editar célula: " + ex.Message);
+            }
+        }
+
+        private void PadsTable_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var grid = (DataGridView)sender;
+
+            var currentValue = grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+            var originalValue = GetOriginalValueFromPad(e.RowIndex, e.ColumnIndex);
+
+            if (currentValue != originalValue)
+            {
+                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Style.BackColor = Color.White;
+            }
+        }
+
+        private string? GetOriginalValueFromPad(int rowIndex, int columnIndex)
+        {
+            if (rowIndex >= originalConfigs.Count) return null;
+
+            var original = originalConfigs[rowIndex];
+            return columnIndex switch
+            {
+                0 => original.Pin.ToString(),
+                1 => original.Name,
+                2 => original.Type.ToString(),
+                3 => original.Note.ToString(),
+                4 => original.Threshold.ToString(),
+                5 => original.ScanTime.ToString(),
+                6 => original.MaskTime.ToString(),
+                7 => original.Retrigger.ToString(),
+                8 => original.Curve.ToString(),
+                9 => original.CurveForm.ToString(),
+                10 => original.Gain.ToString(),
+                11 => original.Xtalk.ToString(),
+                12 => original.XtalkGroup.ToString(),
+                13 => original.Channel.ToString(),
+                _ => null
+            };
+        }
+
+
+
     }
 }

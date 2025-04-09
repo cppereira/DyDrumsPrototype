@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Text.Json;
-using System.Threading.Tasks;
 using DyDrums.Models;
 
 namespace DyDrums.Services
@@ -24,7 +19,7 @@ namespace DyDrums.Services
             }
 
             filePath = Path.Combine(configDir, "pads.json");
-            
+
         }
         public string GetFilePath()
         {

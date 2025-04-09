@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using DyDrums.Models;
 using DyDrums.Serial;
 
@@ -11,7 +8,7 @@ namespace DyDrums.Services
     {
         private readonly SerialManager serialManager;
 
-       public EEPROMService(SerialManager serialManager)
+        public EEPROMService(SerialManager serialManager)
         {
             this.serialManager = serialManager;
         }

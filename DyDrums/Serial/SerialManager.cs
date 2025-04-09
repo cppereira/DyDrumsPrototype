@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO.Ports;
-using System.Threading;
 using DyDrums.Midi;
 using DyDrums.Services;
 using DyDrums.UI;
@@ -27,7 +24,6 @@ namespace DyDrums.Serial
                 if (serialPort != null)
                 {
                     serialPort.DataReceived -= SerialPort_DataReceived;
-
                     if (serialPort.IsOpen)
                         serialPort.Close();
 
@@ -126,7 +122,7 @@ namespace DyDrums.Serial
                                         int invertedValue = max - data2;
                                         MainForm.Instance.HHCVerticalProgressBar.Value = Math.Max(MainForm.Instance.HHCVerticalProgressBar.Minimum, invertedValue);
                                     }
-                                });  ;
+                                }); ;
                             }
                             else
                             {

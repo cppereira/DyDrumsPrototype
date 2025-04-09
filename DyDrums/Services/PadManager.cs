@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DyDrums.Models;
-using DyDrums.Serial;
+﻿using DyDrums.Models;
 using DyDrums.UI;
 
 namespace DyDrums.Services
 {
-    public  class PadManager
+    public class PadManager
     {
         public Dictionary<int, PadConfig> Pads { get; set; } = new();
         private readonly List<PadConfig> padConfigs = new();
@@ -20,7 +12,7 @@ namespace DyDrums.Services
         private PadManager? padManager;
 
         public void LoadConfigs(List<PadConfig> configs)
-        {            
+        {
             padConfigs.Clear();
             padConfigs.AddRange(configs);
             MainForm.Instance.RefreshPadsTable();
@@ -41,7 +33,7 @@ namespace DyDrums.Services
         public void ProcessSysex(List<byte[]> messages, DataGridView grid)
         {
             receivedMessages.AddRange(messages);
-            
+
             // Verifica se a última mensagem indica o fim da transmissão
             if (alreadyProcessed || !receivedMessages.Any(m => IsEndMessage(m)))
             {
