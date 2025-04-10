@@ -227,6 +227,60 @@ namespace DyDrums.UI
             Invoke(() =>
             {
                 string timestamp = DateTime.Now.ToString("ss,fff");
+
+                MidiMonitorTextBox.SelectionFont = new Font(MidiMonitorTextBox.Font, FontStyle.Bold);
+                switch (note)
+                {
+                    case 36:
+                        MidiMonitorTextBox.SelectionColor = Color.Green;
+                        break;
+                    case 38:
+                        MidiMonitorTextBox.SelectionColor = Color.Red;
+                        break;
+                    case 98:
+                        MidiMonitorTextBox.SelectionColor = Color.Brown;
+                        break;
+                    case 47:
+                        MidiMonitorTextBox.SelectionColor = Color.Brown;
+                        break;
+                    case 45:
+                        MidiMonitorTextBox.SelectionColor = Color.Brown;
+                        break;
+                    case 43:
+                        MidiMonitorTextBox.SelectionColor = Color.Brown;
+                        break;
+                    case 41:
+                        MidiMonitorTextBox.SelectionColor = Color.Brown;
+                        break;
+                    case 49:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 55:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 57:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 51:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 52:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 53:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 7:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    case 24:
+                        MidiMonitorTextBox.SelectionColor = Color.Blue;
+                        break;
+                    default:
+                        MidiMonitorTextBox.SelectionColor = Color.Black;
+                        break;
+                }
+
                 string formatted = string.Format("[{0}] => Canal: {1,-2} | Nota: {2,-3} | Velocity: {3,-3}", timestamp, channel, note, velocity);
                 MidiMonitorTextBox.AppendText(formatted + Environment.NewLine);
                 MidiMonitorTextBox.SelectionStart = MidiMonitorTextBox.Text.Length;
@@ -381,6 +435,7 @@ namespace DyDrums.UI
                             pad.Channel = channel;
                             changed = true;
                         }
+                        break;
                         break;
                     case "Gain":
                         if (int.TryParse(newValue, out var gain) && pad.Gain != gain)
