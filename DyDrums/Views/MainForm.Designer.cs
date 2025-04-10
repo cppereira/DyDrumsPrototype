@@ -1,4 +1,6 @@
-﻿namespace DyDrums.UI
+﻿using DyDrums.Views;
+
+namespace DyDrums.UI
 {
     partial class MainForm
     {
@@ -61,7 +63,7 @@
             MidiMonitorClearButton = new Button();
             MidiMonitorTextBox = new RichTextBox();
             label1 = new Label();
-            HHCVerticalProgressBar = new DyDrums.Services.VerticalProgressBar();
+            HHCVerticalProgressBar = new DyDrums.Views.VerticalProgressBar();
             PadConfigDownloadButton = new Button();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)PadsTable).BeginInit();
@@ -419,7 +421,7 @@
         private Label HiHatProgressBarLabel;
         private GroupBox groupBox4;
         private Button COMPortsScanButton;
-        public Services.VerticalProgressBar HHCVerticalProgressBar;
+        public VerticalProgressBar HHCVerticalProgressBar;
         private Label label1;
         private RichTextBox MidiMonitorTextBox;
         private Button PadConfigDownloadButton;

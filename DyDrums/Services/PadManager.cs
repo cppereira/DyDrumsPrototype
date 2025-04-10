@@ -42,7 +42,7 @@ namespace DyDrums.Services
 
             alreadyProcessed = true;
 
-            var pads = EEPROMService.ParseSysex(receivedMessages);
+            var pads = EEPROMManager.ParseSysex(receivedMessages);
 
             // Remove pads inválidos ou fantasmas
             pads = pads

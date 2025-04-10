@@ -1,6 +1,6 @@
 ﻿using NAudio.Midi;
 
-namespace DyDrums.Midi
+namespace DyDrums.Services
 {
     public class MidiManager
     {
@@ -54,7 +54,7 @@ namespace DyDrums.Midi
         {
             if (midiOut == null) return;
             int midiChannel = channel & 0x0F;
-            int message = (0x90 | midiChannel) | (note << 8) | (velocity << 16);
+            int message = 0x90 | midiChannel | note << 8 | velocity << 16;
             midiOut.Send(message);
         }
 
@@ -62,7 +62,7 @@ namespace DyDrums.Midi
         {
             if (midiOut == null) return;
             int midiChannel = channel & 0x0F;
-            int message = (0x80 | midiChannel) | (note << 8) | (velocity << 16);
+            int message = 0x80 | midiChannel | note << 8 | velocity << 16;
             midiOut.Send(message);
         }
 
@@ -83,8 +83,8 @@ namespace DyDrums.Midi
         {
             if (midiOut != null)
             {
-                byte status = (byte)(0xB0 | (channel - 1)); // CC message
-                int midiMessage = status | (controller << 8) | (value << 16);
+                byte status = (byte)(0xB0 | channel - 1); // CC message
+                int midiMessage = status | controller << 8 | value << 16;
                 midiOut.Send(midiMessage);
             }
         }

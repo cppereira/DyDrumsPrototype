@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
 using DyDrums.Models;
-using DyDrums.Serial;
 
 namespace DyDrums.Services
 {
-    public class EEPROMService
+    public class EEPROMManager
     {
         private readonly SerialManager serialManager;
 
-        public EEPROMService(SerialManager serialManager)
+        public EEPROMManager(SerialManager serialManager)
         {
             this.serialManager = serialManager;
         }
