@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.IO.Ports;
+using DyDrums.Midi;
+using DyDrums.Services;
 using DyDrums.UI;
 
-namespace DyDrums.Services
+namespace DyDrums.Serial
 {
     public class SerialManager
     {

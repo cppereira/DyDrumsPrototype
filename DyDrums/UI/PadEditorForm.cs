@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using DyDrums.Midi;
 using DyDrums.Models;
 using DyDrums.Services;
 
@@ -8,14 +9,14 @@ namespace DyDrums.UI
     public partial class PadEditorForm : Form
     {
 
-        private readonly EEPROMManager _eepromService;
+        private readonly EEPROMService _eepromService;
         private MidiManager midiManager;
         private PadConfig originalPad;
         private PadConfig pad;
         private bool preenchendoCampos = false;
 
 
-        public PadEditorForm(PadConfig padToEdit, EEPROMManager eepromService)
+        public PadEditorForm(PadConfig padToEdit, EEPROMService eepromService)
         {
             InitializeComponent();
             this.originalPad = padToEdit;

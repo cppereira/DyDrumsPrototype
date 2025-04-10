@@ -1,6 +1,6 @@
 ﻿using NAudio.Midi;
 
-namespace DyDrums.Services
+namespace DyDrums.Midi
 {
     public class MidiManager
     {

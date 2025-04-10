@@ -1,6 +1,9 @@
-﻿using DyDrums.Controllers;
+﻿using System.IO.Ports;
+using DyDrums.Midi;
 using DyDrums.Models;
+using DyDrums.Serial;
 using DyDrums.Services;
+using NAudio.Midi;
 
 namespace DyDrums.UI
 {
@@ -10,14 +13,13 @@ namespace DyDrums.UI
         // Contante para o HHC, depois implementar para pegar ele do arquivo ou da EEPROM...
         private const int HHCNote = 4;
 
-        private ConnectionController connectionController;
         private readonly SerialManager serialManager = new();
         private readonly MidiManager midiManager = new();
         private readonly PadManager padManager = new PadManager();
         private readonly ConfigManager configManager = new();
         private static List<byte[]> receivedMessages = new();
         private List<PadConfig>? allPads;
-        private EEPROMManager eepromService;
+        private EEPROMService eepromService;
         private List<PadConfig> originalConfigs = new();
 
         public static MainForm? Instance { get; private set; }
@@ -27,7 +29,7 @@ namespace DyDrums.UI
             InitializeComponent();
             midiManager.Initialize();
             padManager = new PadManager();
-            eepromService = new EEPROMManager(serialManager);
+            eepromService = new EEPROMService(serialManager);
             Instance = this;
         }
 
@@ -48,7 +50,8 @@ namespace DyDrums.UI
             AtualizarListaDePortas();
             //Chama o método que atualiza a lista de dispositivos MIDI disponíveis
             ListarDispositivosMidi();
-
+            //Conecta o evento do checkbox
+            ConnectCheckBox.CheckedChanged += ConnectCheckBox_CheckedChanged;
             var pads = configManager.LoadFromFile();
 
             originalConfigs = pads.Select(p => p.Clone()).ToList();
@@ -64,38 +67,44 @@ namespace DyDrums.UI
         private void AtualizarListaDePortas()
         {
             COMPortsComboBox.Items.Clear();
-            var portas = ConnectionManager.ObterPortasCOMDisponiveis();
-            COMPortsComboBox.Items.AddRange(portas);
+            string[] portas = SerialPort.GetPortNames();
 
+            Array.Sort(portas); // Ordena alfabeticamente (ex: COM1, COM2, COM3...)
+            foreach (string porta in portas)
+            {
+                COMPortsComboBox.Items.Add(porta);
+            }
+
+            // Selecionar a última porta COM disponível (normalmente onde já está o Arduino
             if (portas.Length > 0)
             {
-                COMPortsComboBox.SelectedItem = portas[^1]; // Seleciona a última porta
+                COMPortsComboBox.SelectedItem = portas[^1]; // última porta
             }
         }
-
-
-        private void ListarDispositivosMidi()
-        {
-            MidiDevicesComboBox.Items.Clear();
-
-            var dispositivos = ConnectionManager.ObterDispositivosMidi(); // Agora no lugar certo
-
-            foreach (var dispositivo in dispositivos)
-            {
-                MidiDevicesComboBox.Items.Add(dispositivo);
-            }
-
-            if (MidiDevicesComboBox.Items.Count > 0)
-            {
-                MidiDevicesComboBox.SelectedIndex = MidiDevicesComboBox.Items.Count - 1;
-            }
-        }
-
 
         private void COMPortsScanButton_Click(object? sender, EventArgs? e)
         {
             AtualizarListaDePortas();
 
+        }
+
+        private void ListarDispositivosMidi()
+        {
+            MidiDevicesComboBox.Items.Clear();
+
+            int totalDevices = MidiOut.NumberOfDevices;
+
+            for (int i = 0; i < totalDevices; i++)
+            {
+                string deviceName = MidiOut.DeviceInfo(i).ProductName;
+                MidiDevicesComboBox.Items.Add(deviceName);
+            }
+
+            // Selecionar o último dispositivo MIDI disponível
+            if (MidiDevicesComboBox.Items.Count > 0)
+            {
+                MidiDevicesComboBox.SelectedIndex = MidiDevicesComboBox.Items.Count - 1;
+            }
         }
 
         private void MidiDevicesScanButton_Click(object? sender, EventArgs? e)
